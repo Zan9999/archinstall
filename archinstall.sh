@@ -41,17 +41,15 @@ echo '
 
          ─────────────────────────────────────────────────────────────────────────
 '
-sed -i s/'#en_US.UTF-8'/'en_US.UTF-8'/g /etc/locale.gen
-sed -i s/'#ru_RU.UTF-8'/'ru_RU.UTF-8'/g /etc/locale.gen
-echo "LANG=ru_RU.UTF-8" >> /etc/locale.conf
-echo "KEYMAP=ru" >> /etc/vconsole.conf
-echo "FONT=cyr-sun16" >> /etc/vconsole.conf
 setfont cyr-sun16
-locale-gen
-sudo pacman-key --init               
-sudo pacman-key --populate archlinux 
-sudo pacman-key --refresh-keys     
-sudo pacman -Sy      
+pacman-key --init               
+pacman-key --populate archlinux 
+pacman-key --refresh-keys
+pacman-key --keyserver hkps://keyserver.ubuntu.com --recv-keys 9AE4078033F8024D
+pacman-key --lsign-key 9AE4078033F8024D
+echo "[liquorix]" >> /etc/pacman.conf
+echo "Server = https://liquorix.net/archlinux/$repo/$arch" >> /etc/pacman.conf
+pacman -Syy      
 clear
 echo '
                                     Настройка часового пояса
@@ -78,10 +76,25 @@ echo '
 read -p "
                         -> Введите значение : " region
 
-ln -sf /usr/share/zoneinfo/$region /etc/localtime
-hwclock --systohc
 clear
+echo '
+                                      Выбор диска
 
+              .─────────────────────────────────────────────────────────────.
+              .                                                             .
+              .                                                             .
+              .             Введите имя диска для разметки                  .
+              .                                                             .
+              .   ** Это важно для дальнейщей установки загрузчика GRUB **  .
+              .                                                             .
+              .         Например ( sda , sdb, sdc , nvme0n1p )              .
+              .                                                             .
+              .                                                             .
+              ──────────────────────────────────────────────────────────────.
+'
+read -p "
+                        -> Введите значение : " disk
+clear
 echo '
                                         Имя хоста
                 .───────────────────────────────────────────────────────────.
@@ -94,11 +107,6 @@ echo '
 read -p "
                     -> Введите имя хоста:  " hostname
 clear
-
-echo $hostname >> /etc/hostname
-echo "127.0.0.1 localhost" >> /etc/hosts
-echo "::1       localhost" >> /etc/hosts
-echo "127.0.1.1 $hostname.localdomain $hostname" >> /etc/hosts
 
 echo '
                                         Пароль root
@@ -157,6 +165,7 @@ echo '
               .                                                              .
               .   -> С ядром повышеной стабильности Linux-lts - введите 3    .
               .                                                              .
+              .   -> C производительным ядром Linux-zen - введите 4          .
               .                                                              .
               .──────────────────────────────────────────────────────────────.
 '
@@ -166,19 +175,24 @@ echo -e "\t
                                  -> Linux-zen ( 2 )"
 echo -e "\t
                                  -> Linux-lts ( 3 )"
+echo -e "\t
+                                 -> Linux-lqx ( 4 )"
 echo -n "
                                  -> Введите значение : "
 read main_menu
       case "$main_menu" in
 
-         "1" ) clear ; pacman -S base base-devel linux linux-headers linux-firmware dosfstools btrfs-progs iucode-tool archlinux-keyring bluez bluez-utils micro git --noconfirm
+         "1" ) clear ; pacstrap /mnt base base-devel linux linux-headers linux-firmware dosfstools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
          ;;
-         "2" ) clear ; pacman -S base base-devel linux-zen linux-zen-headers linux-firmware dosfstools btrfs-progs iucode-tool archlinux-keyring bluez bluez-utils micro git --noconfirm
+         "2" ) clear ; pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware dosfstools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
          ;;
-         "3" ) clear ; pacman -S base base-devel linux-lts linux-lts-headers linux-firmware dosfstools btrfs-progs iucode-tool archlinux-keyring bluez bluez-utils micro git --noconfirm
+         "3" ) clear ; pacstrap /mnt base base-devel linux-lts linux-lts-headers linux-firmware dosfstools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
+         ;;
+         "4" ) clear ; pacstrap /mnt base base-devel linux-lqx linux-lqx-headers linux-firmware dosfstools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
       esac
 
 clear
+genfstab -U /mnt >> /mnt/etc/fstab
 
 echo '
                                      Драйвера видеокарты
@@ -242,40 +256,11 @@ echo -n "
                           -> Введите значение : "
 read main_menu
       case "$main_menu" in
-         "1" ) pacman -S intel-ucode iucode-tool
+         "1" ) arch-chroot /mnt /bin/bash -c "pacman -S intel-ucode"
         ;;
-         "2" ) pacman -S amd-ucode iucode-tool
+         "2" ) arch-chroot /mnt /bin/bash -c "pacman -S amd-ucode"
       esac
 
-clear
-
-echo '
-
-───────────────────────────────────────────────────────────────|
-──────────────────────
-────────────────────── ██████╗  █████╗  ██████╗███╗   ███╗ █████╗ ███╗   ██╗
-────────────────────── ██╔══██╗██╔══██╗██╔════╝████╗ ████║██╔══██╗████╗  ██║
-──▒▒▒▒▒────▄████▄───── ██████╔╝███████║██║     ██╔████╔██║███████║██╔██╗ ██║
-─▒─▄▒─▄▒──███▄█▀────── ██╔═══╝ ██╔══██║██║     ██║╚██╔╝██║██╔══██║██║╚██╗██║
-─▒▒▒▒▒▒▒─▐████──█──█── ██║     ██║  ██║╚██████╗██║ ╚═╝ ██║██║  ██║██║ ╚████║
-─▒▒▒▒▒▒▒──█████▄────── ╚═╝     ╚═╝  ╚═╝ ╚═════╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝
-─▒─▒─▒─▒───▀████▀─────────────────────────────────────────────────────────────────|
-
-                       Пожалуйста пдождите , идет настройка скачивания пакетов,
-
-                                  это займет пару мнгновений ) .......
-
-              ─────────────────────────────────────────────────────────────────────────────────────|
-'
-sleep 4
-sed -i s/'#Color'/'Color'/g /etc/pacman.conf
-sed -i s/'#ParallelDownloads = 5'/'ParallelDownloads = 5'/g /etc/pacman.conf
-sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
-sed -i s/'# %wheel ALL=(ALL:ALL) ALL'/'%wheel ALL=(ALL:ALL) ALL'/g /etc/sudoers
-./chaotic-aur.sh
-pacman -Syy --needed grub efibootmgr networkmanager bash-completion rsync reflector ntfs-3g pulseaudio pulseaudio-alsa pulseaudio-jack xdg-user-dirs xdg-utils realtime-privileges xorg xorg-server xorg-xinit mtools archlinux-keyring yay --noconfirm
-reflector --sort rate -l 10 --save /etc/pacman.d/mirrorlist
-pacman -Syy
 clear
 echo '
                                    Графическая оболочка
@@ -294,9 +279,7 @@ echo -e "\t
 echo -e "\t
                                  -> GNOME ( 2 )"
 echo -e "\t
-                                 -> I3-WM( 3 )"
-echo -e "\t
-                                 -> Budgie( 4 )"
+                                 -> Budgie( 3 )"
 echo -n "
                                  -> Введите значение : "
 read main_menu
@@ -306,26 +289,60 @@ read main_menu
          ;;
          "2" ) clear ; ./DE/gnome.sh
          ;;
-         "3" ) clear ; ./i3/install.sh
-         ;;
-         "4" ) clear ; ./DE/budgie.sh
+         "3" ) clear ; ./DE/budgie.sh
       esac
 
 clear
+echo '
+───────────────────────────────────────────────────────────────|
+──────────────────────
+────────────────────── ██████╗  █████╗  ██████╗███╗   ███╗ █████╗ ███╗   ██╗
+────────────────────── ██╔══██╗██╔══██╗██╔════╝████╗ ████║██╔══██╗████╗  ██║
+──▒▒▒▒▒────▄████▄───── ██████╔╝███████║██║     ██╔████╔██║███████║██╔██╗ ██║
+─▒─▄▒─▄▒──███▄█▀────── ██╔═══╝ ██╔══██║██║     ██║╚██╔╝██║██╔══██║██║╚██╗██║
+─▒▒▒▒▒▒▒─▐████──█──█── ██║     ██║  ██║╚██████╗██║ ╚═╝ ██║██║  ██║██║ ╚████║
+─▒▒▒▒▒▒▒──█████▄────── ╚═╝     ╚═╝  ╚═╝ ╚═════╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝
+─▒─▒─▒─▒───▀████▀─────────────────────────────────────────────────────────────────|
 
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
+                       Пожалуйста пдождите , идет настройка скачивания пакетов,
 
-grub-mkconfig -o /boot/grub/grub.cfg
+                                  это займет пару мнгновений ) .......
 
-systemctl enable NetworkManager
-
-echo "root:$password" | chpasswd
-useradd -mG wheel,storage,realtime -s /bin/bash $username
-echo "$username:$userpassword" | chpasswd
+              ─────────────────────────────────────────────────────────────────────────────────────|
+'
+sleep 4
+arch-chroot /mnt /bin/bash -c "sed -i s/'#ParallelDownloads = 5'/'ParallelDownloads = 5'/g /etc/pacman.conf"
+arch-chroot /mnt /bin/bash -c "sed -i s/'#VerbosePkgLists'/'VerbosePkgLists'/g /etc/pacman.conf"
+arch-chroot /mnt /bin/bash -c "sed -i s/'#Color'/'Color'/g /etc/pacman.conf"
+arch-chroot /mnt /bin/bash -c "sed -i s/'#[multilib]'/'[multilib]'/g /etc/pacman.conf"
+arch-chroot /mnt /bin/bash -c "sed -i s/'#Include = /etc/pacman.d/mirrorlist'/'Include = /etc/pacman.d/mirrorlist'/g /etc/pacman.conf"
+arch-chroot /mnt /bin/bash -c "sed -i s/'# %wheel ALL=(ALL:ALL) ALL'/'%wheel ALL=(ALL:ALL) ALL'/g /etc/sudoers"
+arch-chroot /mnt /bin/bash -c "pacman -Syy --needed grub efibootmgr networkmanager bash-completion rsync reflector ntfs-3g pulseaudio pulseaudio-alsa pulseaudio-jack xdg-user-dirs xdg-utils realtime-privileges xorg xorg-server xorg-xinit mtools archlinux-keyring --noconfirm"
+reflector --sort rate -l 15 --save /etc/pacman.d/mirrorlist
+arch-chroot /mnt /bin/bash -c "pacman -Syy"
+clear
+arch-chroot /mnt /bin/bash -c "ln -sf /usr/share/zoneinfo/$region /etc/localtime"
+arch-chroot /mnt /bin/bash -c "hwclock --systohc"
+arch-chroot /mnt /bin/bash -c "sed -i s/'#en_US.UTF-8'/'en_US.UTF-8'/g /etc/locale.gen"
+arch-chroot /mnt /bin/bash -c "sed -i s/'#ru_RU.UTF-8'/'ru_RU.UTF-8'/g /etc/locale.gen"
+arch-chroot /mnt /bin/bash -c "locale-gen"
+arch-chroot /mnt /bin/bash -c "echo 'LANG=ru_RU.UTF-8' > /etc/locale.conf"
+arch-chroot /mnt /bin/bash -c "echo 'KEYMAP=ru' > /etc/vconsole.conf"
+arch-chroot /mnt /bin/bash -c "echo 'FONT=cyr-sun16' >> /etc/vconsole.conf"
+arch-chroot /mnt /bin/bash -c "echo $hostname >> /etc/hostname"
+arch-chroot /mnt /bin/bash -c "echo '127.0.0.1 localhost' >> /etc/hosts"
+arch-chroot /mnt /bin/bash -c "echo '::1       localhost' >> /etc/hosts"
+arch-chroot /mnt /bin/bash -c "echo '127.0.1.1 $hostname.localdomain $hostname' >> /etc/hosts"
+arch-chroot /mnt /bin/bash -c "grub-install /dev/$disk"
+arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
+arch-chroot /mnt /bin/bash -c "systemctl enable NetworkManager"
+arch-chroot /mnt /bin/bash -c "useradd -m -G wheel,storage,realtime -s /bin/bash $username"
+echo "$username:$userpassword" | arch-chroot /mnt chpasswd
+echo "root:$password" | arch-chroot /mnt chpasswd
 clear
 echo '
 
-───────────────────────────────────────────────────────────────────>
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────>
 ░░░░░░░░░░░░▄▄░░░░░░░░░
 ░░░░░░░░░░░█░░█░░░░░░░░
 ░░░░░░░░░░░█░░█░░░░░░░░
@@ -342,3 +359,8 @@ echo '
   <─────────────────────────────────────────────────────────────────────────────────────────────────────────>
 
 '
+sleep 5
+arch-chroot /mnt /bin/bash -c "exit"
+umount -R /mnt
+clear
+reboot

@@ -1,2 +1,2 @@
-sudo pacman -S --needed xorg xorg-server xorg-xinit ttf-ubuntu-font-family gnome gdm firefox
-sudo systemctl enable gdm
+arch-chroot /mnt /bin/bash -c "pacman -S --needed xorg xorg-server xorg-xinit ttf-ubuntu-font-family gnome gdm firefox"
+arch-chroot /mnt /bin/bash -c "systemctl enable gdm"
