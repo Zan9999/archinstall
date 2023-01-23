@@ -42,14 +42,6 @@ echo '
          ─────────────────────────────────────────────────────────────────────────
 '
 setfont cyr-sun16
-pacman-key --init               
-pacman-key --populate archlinux 
-pacman-key --refresh-keys
-pacman-key --keyserver hkps://keyserver.ubuntu.com --recv-keys 9AE4078033F8024D
-pacman-key --lsign-key 9AE4078033F8024D
-echo "[liquorix]" >> /etc/pacman.conf
-echo "Server = https://liquorix.net/archlinux/$repo/$arch" >> /etc/pacman.conf
-pacman -Syy      
 clear
 echo '
                                     Настройка часового пояса
@@ -165,7 +157,6 @@ echo '
               .                                                              .
               .   -> С ядром повышеной стабильности Linux-lts - введите 3    .
               .                                                              .
-              .   -> C производительным ядром Linux-zen - введите 4          .
               .                                                              .
               .──────────────────────────────────────────────────────────────.
 '
@@ -175,25 +166,105 @@ echo -e "\t
                                  -> Linux-zen ( 2 )"
 echo -e "\t
                                  -> Linux-lts ( 3 )"
-echo -e "\t
-                                 -> Linux-lqx ( 4 )"
 echo -n "
                                  -> Введите значение : "
 read main_menu
       case "$main_menu" in
 
-         "1" ) clear ; pacstrap /mnt base base-devel linux linux-headers linux-firmware dosfstools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
+         "1" ) clear ; pacstrap /mnt base base-devel linux linux-headers linux-firmware dosfstools mtools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
          ;;
-         "2" ) clear ; pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware dosfstools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
+         "2" ) clear ; pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware dosfstools mtools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
          ;;
-         "3" ) clear ; pacstrap /mnt base base-devel linux-lts linux-lts-headers linux-firmware dosfstools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
-         ;;
-         "4" ) clear ; pacstrap /mnt base base-devel linux-lqx linux-lqx-headers linux-firmware dosfstools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
+         "3" ) clear ; pacstrap /mnt base base-devel linux-lts linux-lts-headers linux-firmware dosfstools mtools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
       esac
 
 clear
 genfstab -U /mnt >> /mnt/etc/fstab
+echo '
+───────────────────────────────────────────────────────────────|
+──────────────────────
+────────────────────── ██████╗  █████╗  ██████╗███╗   ███╗ █████╗ ███╗   ██╗
+────────────────────── ██╔══██╗██╔══██╗██╔════╝████╗ ████║██╔══██╗████╗  ██║
+──▒▒▒▒▒────▄████▄───── ██████╔╝███████║██║     ██╔████╔██║███████║██╔██╗ ██║
+─▒─▄▒─▄▒──███▄█▀────── ██╔═══╝ ██╔══██║██║     ██║╚██╔╝██║██╔══██║██║╚██╗██║
+─▒▒▒▒▒▒▒─▐████──█──█── ██║     ██║  ██║╚██████╗██║ ╚═╝ ██║██║  ██║██║ ╚████║
+─▒▒▒▒▒▒▒──█████▄────── ╚═╝     ╚═╝  ╚═╝ ╚═════╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝
+─▒─▒─▒─▒───▀████▀─────────────────────────────────────────────────────────────────|
 
+                       Пожалуйста подождите , идет настройка скачивания пакетов,
+
+                                  это займет пару мгновений  .......
+
+              ─────────────────────────────────────────────────────────────────────────────────────|
+'
+sleep 4
+arch-chroot /mnt /bin/bash -c "sed -i s/'#ParallelDownloads = 5'/'ParallelDownloads = 5'/g /etc/pacman.conf"
+arch-chroot /mnt /bin/bash -c "sed -i s/'#VerbosePkgLists'/'VerbosePkgLists'/g /etc/pacman.conf"
+arch-chroot /mnt /bin/bash -c "sed -i s/'#Color'/'Color'/g /etc/pacman.conf"
+arch-chroot /mnt /bin/bash -c "sed -i '/\[multilib\]/,/Include/''s/^#//' /etc/pacman.conf"
+arch-chroot /mnt /bin/bash -c "sed -i s/'# %wheel ALL=(ALL:ALL) ALL'/'%wheel ALL=(ALL:ALL) ALL'/g /etc/sudoers"
+arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm grub efibootmgr networkmanager bash-completion rsync reflector ntfs-3g xdg-user-dirs xdg-utils realtime-privileges archlinux-keyring"
+reflector --sort rate -l 10 --save /etc/pacman.d/mirrorlist
+arch-chroot /mnt /bin/bash -c "pacman -Syy"
+clear
+echo '
+                                      Звуковой сервер 
+
+              .──────────────────────────────────────────────────────────────────.
+              .                                                                  .
+              .                                                                  .
+              .     	Добро пожаловать в меню установки звукового сервера      .
+              .                                                                  .
+              .  На этом этапе будет установлен звуковой сервер по вашему выбору .
+              .                                                                  .
+              .                                                                  .
+              .                                                                  .
+              .──────────────────────────────────────────────────────────────────.
+
+'
+echo -e "\t
+                          -> PulseAudio   ( 1 ) "
+echo -e "\t
+
+                          -> PipeWire   ( 2 )  "
+echo -n "
+
+                          -> Введите значение : "
+read main_menu
+      case "$main_menu" in
+         "1" ) arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm pulseaudio pulseaudio-alsa pulseaudio-jack pulseaudio-bluetooth"
+        ;;
+         "2" ) arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm pipewire pipewire-pulse pipewire-alsa pipewire-jack"
+      esac
+
+clear
+echo '
+                                      Chaotic-Aur 
+
+              .───────────────────────────────────────────────────────────────────.
+              .                                                                   .
+              .                                                                   .
+              .     Добро пожаловать в меню установки репозитория chaotic-aur     .
+              .                                                                   .
+              .    																  .
+              .───────────────────────────────────────────────────────────────────.
+
+'
+echo -e "\t
+                          -> Установить   ( 1 ) "
+echo -e "\t
+
+                          -> Не устанавливать   ( 2 )  "
+echo -n "
+
+                          -> Введите значение : "
+read main_menu
+      case "$main_menu" in
+         "1" ) ./settings/chaotic-aur.sh
+        ;;
+         "2" ) clear
+      esac
+      
 echo '
                                      Драйвера видеокарты
 
@@ -256,9 +327,9 @@ echo -n "
                           -> Введите значение : "
 read main_menu
       case "$main_menu" in
-         "1" ) arch-chroot /mnt /bin/bash -c "pacman -S intel-ucode"
+         "1" ) arch-chroot /mnt /bin/bash -c "pacman -S intel-ucode --noconfirm"
         ;;
-         "2" ) arch-chroot /mnt /bin/bash -c "pacman -S amd-ucode"
+         "2" ) arch-chroot /mnt /bin/bash -c "pacman -S amd-ucode --noconfirm"
       esac
 
 clear
@@ -293,34 +364,6 @@ read main_menu
       esac
 
 clear
-echo '
-───────────────────────────────────────────────────────────────|
-──────────────────────
-────────────────────── ██████╗  █████╗  ██████╗███╗   ███╗ █████╗ ███╗   ██╗
-────────────────────── ██╔══██╗██╔══██╗██╔════╝████╗ ████║██╔══██╗████╗  ██║
-──▒▒▒▒▒────▄████▄───── ██████╔╝███████║██║     ██╔████╔██║███████║██╔██╗ ██║
-─▒─▄▒─▄▒──███▄█▀────── ██╔═══╝ ██╔══██║██║     ██║╚██╔╝██║██╔══██║██║╚██╗██║
-─▒▒▒▒▒▒▒─▐████──█──█── ██║     ██║  ██║╚██████╗██║ ╚═╝ ██║██║  ██║██║ ╚████║
-─▒▒▒▒▒▒▒──█████▄────── ╚═╝     ╚═╝  ╚═╝ ╚═════╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝
-─▒─▒─▒─▒───▀████▀─────────────────────────────────────────────────────────────────|
-
-                       Пожалуйста пдождите , идет настройка скачивания пакетов,
-
-                                  это займет пару мнгновений ) .......
-
-              ─────────────────────────────────────────────────────────────────────────────────────|
-'
-sleep 4
-arch-chroot /mnt /bin/bash -c "sed -i s/'#ParallelDownloads = 5'/'ParallelDownloads = 5'/g /etc/pacman.conf"
-arch-chroot /mnt /bin/bash -c "sed -i s/'#VerbosePkgLists'/'VerbosePkgLists'/g /etc/pacman.conf"
-arch-chroot /mnt /bin/bash -c "sed -i s/'#Color'/'Color'/g /etc/pacman.conf"
-arch-chroot /mnt /bin/bash -c "sed -i s/'#[multilib]'/'[multilib]'/g /etc/pacman.conf"
-arch-chroot /mnt /bin/bash -c "sed -i s/'#Include = /etc/pacman.d/mirrorlist'/'Include = /etc/pacman.d/mirrorlist'/g /etc/pacman.conf"
-arch-chroot /mnt /bin/bash -c "sed -i s/'# %wheel ALL=(ALL:ALL) ALL'/'%wheel ALL=(ALL:ALL) ALL'/g /etc/sudoers"
-arch-chroot /mnt /bin/bash -c "pacman -Syy --needed grub efibootmgr networkmanager bash-completion rsync reflector ntfs-3g pulseaudio pulseaudio-alsa pulseaudio-jack xdg-user-dirs xdg-utils realtime-privileges xorg xorg-server xorg-xinit mtools archlinux-keyring --noconfirm"
-reflector --sort rate -l 15 --save /etc/pacman.d/mirrorlist
-arch-chroot /mnt /bin/bash -c "pacman -Syy"
-clear
 arch-chroot /mnt /bin/bash -c "ln -sf /usr/share/zoneinfo/$region /etc/localtime"
 arch-chroot /mnt /bin/bash -c "hwclock --systohc"
 arch-chroot /mnt /bin/bash -c "sed -i s/'#en_US.UTF-8'/'en_US.UTF-8'/g /etc/locale.gen"
@@ -337,6 +380,7 @@ arch-chroot /mnt /bin/bash -c "grub-install /dev/$disk"
 arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
 arch-chroot /mnt /bin/bash -c "systemctl enable NetworkManager"
 arch-chroot /mnt /bin/bash -c "useradd -m -G wheel,storage,realtime -s /bin/bash $username"
+arch-chroot /mnt /bin/bash -c "mkinitcpio -P"
 echo "$username:$userpassword" | arch-chroot /mnt chpasswd
 echo "root:$password" | arch-chroot /mnt chpasswd
 clear
@@ -350,7 +394,7 @@ echo '
 ░░░░░░░░░█░░░░█░░░░░░░░
 ███████▄▄█░░░░░██████▄░░
 ▓▓▓▓▓▓█░░░░░░░░░░░░░░█░
-▓▓▓▓▓▓█░░░░░░░░░░░░░░█░              Установка успешно завершена .
+▓▓▓▓▓▓█░░░░░░░░░░░░░░█░              Установка успешно завершена . Сейчас компьютер будет перезагружен .
 ▓▓▓▓▓▓█░░░░░░░░░░░░░░█░
 ▓▓▓▓▓▓█░░░░░░░░░░░░░░█░
 ▓▓▓▓▓▓█░░░░░░░░░░░░░░█░
