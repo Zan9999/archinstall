@@ -110,7 +110,7 @@ echo '
                 .          Внимание ! Запомните логин рут , здесь - root    .
                 .                                                           .
                 .              И пароль тот который вы щас зададите         .
-                .                                                           . 
+                .                                                           .
                 .───────────────────────────────────────────────────────────.
 '
 read -p "
@@ -200,7 +200,7 @@ echo '
 sleep 4
 arch-chroot /mnt /bin/bash -c "sed -i s/'#ParallelDownloads = 5'/'ParallelDownloads = 5'/g /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i s/'#VerbosePkgLists'/'VerbosePkgLists'/g /etc/pacman.conf"
-arch-chroot /mnt /bin/bash -c "sed -i s/'#Color'/'Color'/g /etc/pacman.conf"
+arch-chroot /mnt /bin/bash -c "sed -i s/'#Color'/'Color\nILoveCandy'/g /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i '/\[multilib\]/,/Include/''s/^#//' /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i s/'# %wheel ALL=(ALL:ALL) ALL'/'%wheel ALL=(ALL:ALL) ALL'/g /etc/sudoers"
 arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm grub efibootmgr networkmanager bash-completion rsync reflector ntfs-3g xdg-user-dirs xdg-utils realtime-privileges archlinux-keyring"
@@ -208,12 +208,12 @@ reflector --sort rate -l 10 --save /etc/pacman.d/mirrorlist
 arch-chroot /mnt /bin/bash -c "pacman -Syy"
 clear
 echo '
-                                      Звуковой сервер 
+                                      Звуковой сервер
 
               .──────────────────────────────────────────────────────────────────.
               .                                                                  .
               .                                                                  .
-              .     	Добро пожаловать в меню установки звукового сервера      .
+              .     	Добро пожаловать в меню установки звукового сервера        .
               .                                                                  .
               .  На этом этапе будет установлен звуковой сервер по вашему выбору .
               .                                                                  .
@@ -239,7 +239,7 @@ read main_menu
 
 clear
 echo '
-                                      Chaotic-Aur 
+                                      Chaotic-Aur
 
               .───────────────────────────────────────────────────────────────────.
               .                                                                   .
@@ -264,7 +264,7 @@ read main_menu
         ;;
          "2" ) clear
       esac
-      
+
 echo '
                                      Драйвера видеокарты
 
@@ -293,11 +293,11 @@ echo -n "
                           -> Введите значение : "
 read main_menu
       case "$main_menu" in
-         "1" ) ./setings/intel_drivers.sh
+         "1" ) ./settings/intel_drivers.sh
         ;;
-         "2" ) ./setings/amd_drivers.sh
+         "2" ) ./settings/amd_drivers.sh
         ;;
-         "3" ) ./setings/nvidia_drivers.sh
+         "3" ) ./settings/nvidia_drivers.sh
       esac
 
 clear
@@ -314,7 +314,7 @@ echo '
               .                                                                  .
               .                                                                  .
               .                                                                  .
-              .──────────────────────────────────────────────────────────────────. 
+              .──────────────────────────────────────────────────────────────────.
 
 '
 echo -e "\t
