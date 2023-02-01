@@ -57,12 +57,12 @@ echo '
               .                                                              .
               .  ввести вручную , если уже знаете , именно в таком формате   .
               .                                                              .
-              .                  Пример -->   Europe/Moscow                 .
+              .                  Пример -->   Europe/Moscow                  .
               .                                                              .
               .                                                              .
               .──────────────────────────────────────────────────────────────.
 
-                              Выберите один из варинтов :
+                              Выберите один из вариантов :
 
 '
 read -p "
@@ -94,7 +94,9 @@ echo '
                 .                                                           .
                 .                   Укажите имя хоста                       .
                 .                                                           .
-                .───────────────────────────────────────────────────────────.
+                .                                                           .
+                .───────────────────────────────────────────────────────────.                                                           .
+
 '
 read -p "
                     -> Введите имя хоста:  " hostname
@@ -105,7 +107,7 @@ echo '
                 .───────────────────────────────────────────────────────────.
                 .                                                           .
                 .                                                           .
-                .                   Укажите пароль Root !                    .
+                .                   Укажите пароль Root !                   .
                 .                                                           .
                 .          Внимание ! Запомните логин рут , здесь - root    .
                 .                                                           .
@@ -161,7 +163,7 @@ echo '
               .──────────────────────────────────────────────────────────────.
 '
 echo -e "\t
-                                 -> Linux ( 1 ) "
+                                 -> Linux     ( 1 ) "
 echo -e "\t
                                  -> Linux-zen ( 2 )"
 echo -e "\t
@@ -195,7 +197,7 @@ echo '
 
                                   это займет пару мгновений  .......
 
-              ─────────────────────────────────────────────────────────────────────────────────────|
+─────────────────────────────────────────────────────────────────────────────────────|
 '
 sleep 4
 arch-chroot /mnt /bin/bash -c "sed -i s/'#ParallelDownloads = 5'/'ParallelDownloads = 5'/g /etc/pacman.conf"
@@ -203,7 +205,7 @@ arch-chroot /mnt /bin/bash -c "sed -i s/'#VerbosePkgLists'/'VerbosePkgLists'/g /
 arch-chroot /mnt /bin/bash -c "sed -i s/'#Color'/'Color\nILoveCandy'/g /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i '/\[multilib\]/,/Include/''s/^#//' /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i s/'# %wheel ALL=(ALL:ALL) ALL'/'%wheel ALL=(ALL:ALL) ALL'/g /etc/sudoers"
-arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm grub efibootmgr networkmanager bash-completion rsync reflector ntfs-3g xdg-user-dirs xdg-utils realtime-privileges archlinux-keyring"
+arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm grub efibootmgr networkmanager bash-completion rsync reflector ntfs-3g xdg-user-dirs xdg-utils realtime-privileges archlinux-keyring xclip"
 reflector --sort rate -l 10 --save /etc/pacman.d/mirrorlist
 arch-chroot /mnt /bin/bash -c "pacman -Syy"
 clear
@@ -213,7 +215,7 @@ echo '
               .──────────────────────────────────────────────────────────────────.
               .                                                                  .
               .                                                                  .
-              .     	Добро пожаловать в меню установки звукового сервера        .
+              .     	Добро пожаловать в меню установки звукового сервера      .
               .                                                                  .
               .  На этом этапе будет установлен звуковой сервер по вашему выбору .
               .                                                                  .
@@ -223,10 +225,10 @@ echo '
 
 '
 echo -e "\t
-                          -> PulseAudio   ( 1 ) "
+                          -> PulseAudio ( 1 )"
 echo -e "\t
 
-                          -> PipeWire   ( 2 )  "
+                          -> PipeWire   ( 2 )"
 echo -n "
 
                           -> Введите значение : "
@@ -251,10 +253,10 @@ echo '
 
 '
 echo -e "\t
-                          -> Установить   ( 1 ) "
+                          -> Установить        ( 1 )"
 echo -e "\t
 
-                          -> Не устанавливать   ( 2 )  "
+                          -> Не устанавливать  ( 2 )"
 echo -n "
 
                           -> Введите значение : "
@@ -264,7 +266,8 @@ read main_menu
         ;;
          "2" ) clear
       esac
-
+      
+clear
 echo '
                                      Драйвера видеокарты
 
@@ -281,10 +284,10 @@ echo '
 
 '
 echo -e "\t
-                          -> Для графики Intel введите   ( 1 ) "
+                          -> Для графики Intel введите    ( 1 )"
 echo -e "\t
 
-                          -> Для графики AMD введите   ( 2 )  "
+                          -> Для графики AMD введите      ( 2 )"
 echo -e "\t
 
                           -> Для графики Nvidia введите   ( 3 ) "
@@ -318,10 +321,10 @@ echo '
 
 '
 echo -e "\t
-                          -> Для процессора Intel введите   ( 1 ) "
+                          -> Для процессора Intel введите   ( 1 )"
 echo -e "\t
 
-                          -> Для процессора AMD введите   ( 2 )  "
+                          -> Для процессора AMD введите    ( 2 )"
 echo -n "
 
                           -> Введите значение : "
@@ -346,11 +349,17 @@ echo '
                 .────────────────────────────────────────────────────────.
 '
 echo -e "\t
-                                 -> KDE ( 1 ) "
+                                 -> KDE        ( 1 )"
 echo -e "\t
-                                 -> GNOME ( 2 )"
+                                 -> GNOME      ( 2 )"
 echo -e "\t
-                                 -> Budgie( 3 )"
+                                 -> Budgie     ( 3 )"
+echo -e "\t
+                                 -> XFCE       ( 4 )"
+echo -e "\t
+                                 -> CINNAMON   ( 5 )"
+echo -e "\t
+                                 -> XORG       ( 6 )"
 echo -n "
                                  -> Введите значение : "
 read main_menu
@@ -361,6 +370,12 @@ read main_menu
          "2" ) clear ; ./DE/gnome.sh
          ;;
          "3" ) clear ; ./DE/budgie.sh
+		 ;;
+         "4" ) clear ; ./DE/xfce.sh
+         ;;
+         "5" ) clear ; ./DE/cinnamon.sh
+         ;;
+         "6" ) clear ; arch-chroot /mnt /bin/bash -c "pacman -S xorg xorg-server xorg-xinit --noconfirm --needed"
       esac
 
 clear
