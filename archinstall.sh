@@ -62,8 +62,6 @@ echo '
               .                                                              .
               .──────────────────────────────────────────────────────────────.
 
-                              Выберите один из вариантов :
-
 '
 read -p "
                         -> Введите значение : " region
@@ -385,12 +383,14 @@ arch-chroot /mnt /bin/bash -c "sed -i s/'#en_US.UTF-8'/'en_US.UTF-8'/g /etc/loca
 arch-chroot /mnt /bin/bash -c "sed -i s/'#ru_RU.UTF-8'/'ru_RU.UTF-8'/g /etc/locale.gen"
 arch-chroot /mnt /bin/bash -c "locale-gen"
 arch-chroot /mnt /bin/bash -c "echo 'LANG=ru_RU.UTF-8' > /etc/locale.conf"
-arch-chroot /mnt /bin/bash -c "echo 'KEYMAP=ru' > /etc/vconsole.conf"
+arch-chroot /mnt /bin/bash -c "echo 'KEYMAP=ru' >> /etc/vconsole.conf"
 arch-chroot /mnt /bin/bash -c "echo 'FONT=cyr-sun16' >> /etc/vconsole.conf"
 arch-chroot /mnt /bin/bash -c "echo $hostname >> /etc/hostname"
 arch-chroot /mnt /bin/bash -c "echo '127.0.0.1 localhost' >> /etc/hosts"
 arch-chroot /mnt /bin/bash -c "echo '::1       localhost' >> /etc/hosts"
 arch-chroot /mnt /bin/bash -c "echo '127.0.1.1 $hostname.localdomain $hostname' >> /etc/hosts"
+arch-chroot /mnt /bin/bash -c "echo 'export EDITOR=micro' >> .bash_profile"
+arch-chroot /mnt /bin/bash -c "echo -e 'PATH=~/.local/bin/:\$PATH' >> .bash_profile"
 arch-chroot /mnt /bin/bash -c "grub-install /dev/$disk"
 arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
 arch-chroot /mnt /bin/bash -c "systemctl enable NetworkManager"
