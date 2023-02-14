@@ -239,34 +239,6 @@ read main_menu
 
 clear
 echo '
-                                      Chaotic-Aur
-
-              .───────────────────────────────────────────────────────────────────.
-              .                                                                   .
-              .                                                                   .
-              .     Добро пожаловать в меню установки репозитория chaotic-aur     .
-              .                                                                   .
-              .    																  .
-              .───────────────────────────────────────────────────────────────────.
-
-'
-echo -e "\t
-                          -> Установить        ( 1 )"
-echo -e "\t
-
-                          -> Не устанавливать  ( 2 )"
-echo -n "
-
-                          -> Введите значение : "
-read main_menu
-      case "$main_menu" in
-         "1" ) ./settings/chaotic-aur.sh
-        ;;
-         "2" ) clear
-      esac
-      
-clear
-echo '
                                      Драйвера видеокарты
 
               .─────────────────────────────────────────────────────────────────.
@@ -389,8 +361,8 @@ arch-chroot /mnt /bin/bash -c "echo $hostname >> /etc/hostname"
 arch-chroot /mnt /bin/bash -c "echo '127.0.0.1 localhost' >> /etc/hosts"
 arch-chroot /mnt /bin/bash -c "echo '::1       localhost' >> /etc/hosts"
 arch-chroot /mnt /bin/bash -c "echo '127.0.1.1 $hostname.localdomain $hostname' >> /etc/hosts"
-arch-chroot /mnt /bin/bash -c "echo 'export EDITOR=micro' >> .bash_profile"
-arch-chroot /mnt /bin/bash -c "echo -e 'PATH=~/.local/bin/:\$PATH' >> .bash_profile"
+arch-chroot /mnt /bin/bash -c "echo 'export EDITOR=micro' >> .profile"
+arch-chroot /mnt /bin/bash -c "echo -e 'export PATH=~/.local/bin/:\$PATH' >> ._profile"
 arch-chroot /mnt /bin/bash -c "grub-install /dev/$disk"
 arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
 arch-chroot /mnt /bin/bash -c "systemctl enable NetworkManager"
