@@ -294,7 +294,7 @@ echo -e "\t
                           -> Для процессора Intel введите   ( 1 )"
 echo -e "\t
 
-                          -> Для процессора AMD введите    ( 2 )"
+                          -> Для процессора AMD введите     ( 2 )"
 echo -n "
 
                           -> Введите значение : "
@@ -319,17 +319,39 @@ echo '
                 .────────────────────────────────────────────────────────.
 '
 echo -e "\t
-                                 -> KDE        ( 1 )"
+                                 -> Для установки KDE введите           ( 1 )"
 echo -e "\t
-                                 -> GNOME      ( 2 )"
+                          -> Для установки KDE облегченная введите      ( 2 )
+                                 
+																 Без пакета    kde-applicatios          "
 echo -e "\t
-                                 -> Budgie     ( 3 )"
+                                 -> Для установки GNOME введите         ( 3 )"
 echo -e "\t
-                                 -> XFCE       ( 4 )"
+                          -> Для установки GNOME облегченная введите    ( 4 )
+                                  
+																	Без пакета gnome-extra                   "
 echo -e "\t
-                                 -> CINNAMON   ( 5 )"
+                                 -> Для установки BUDGIE введите       ( 5 )"
 echo -e "\t
-                                 -> XORG       ( 6 )"
+                          -> Для установки BUGDIE облегченная введите  ( 6 )
+                                  
+																	Без пакета budgie-extras                   "
+echo -e "\t
+                                 -> Для установки XFCE введите        ( 7 )"
+echo -e "\t
+                          -> Для установки XFCE облегченная введите   ( 8 )
+                                  
+																	Без пакета xfce4-goodies                   "
+echo -e "\t
+                                 -> Для установки CINNAMON введите   ( 9 )"
+echo -e "\t
+                                 -> Для установки MATE введите       ( 10 )"
+echo -e "\t
+                          -> Для установки MATE облегченная введите  ( 11 )
+                                  
+																	Без пакета mate-extra                   "
+echo -e "\t
+                                 -> XORG                            ( 12 )"
 echo -n "
                                  -> Введите значение : "
 read main_menu
@@ -337,15 +359,27 @@ read main_menu
 
          "1" ) clear ; ./DE/kde.sh
          ;;
-         "2" ) clear ; ./DE/gnome.sh
+         "2" ) clear ; ./DE/kde_lite.sh
          ;;
-         "3" ) clear ; ./DE/budgie.sh
-		 ;;
-         "4" ) clear ; ./DE/xfce.sh
+         "3" ) clear ; ./DE/gnome.sh
+		 		 ;;
+         "4" ) clear ; ./DE/gnome_lite.sh
          ;;
-         "5" ) clear ; ./DE/cinnamon.sh
+         "5" ) clear ; ./DE/budgie.sh
          ;;
-         "6" ) clear ; arch-chroot /mnt /bin/bash -c "pacman -S xorg xorg-server xorg-xinit --noconfirm --needed"
+				 "6" ) clear ; ./DE/budgie_lite.sh
+         ;;
+				 "7" ) clear ; ./DE/xfce.sh
+         ;;
+				 "8" ) clear ; ./DE/xfce_lite.sh
+         ;;
+				 "9" ) clear ; ./DE/cinnamon.sh
+         ;;
+				 "10" ) clear ; ./DE/mate.sh
+         ;;
+				 "11" ) clear ; ./DE/mate_lite.sh
+         ;;
+         "12" ) clear ; arch-chroot /mnt /bin/bash -c "pacman -S xorg xorg-server xorg-xinit --noconfirm --needed"
       esac
 
 clear
@@ -362,7 +396,7 @@ arch-chroot /mnt /bin/bash -c "echo '127.0.0.1 localhost' >> /etc/hosts"
 arch-chroot /mnt /bin/bash -c "echo '::1       localhost' >> /etc/hosts"
 arch-chroot /mnt /bin/bash -c "echo '127.0.1.1 $hostname.localdomain $hostname' >> /etc/hosts"
 arch-chroot /mnt /bin/bash -c "echo 'export EDITOR=micro' >> .profile"
-arch-chroot /mnt /bin/bash -c "echo -e 'export PATH=~/.local/bin/:\$PATH' >> ._profile"
+arch-chroot /mnt /bin/bash -c "echo -e 'export PATH=~/.local/bin/:\$PATH' >> .profile"
 arch-chroot /mnt /bin/bash -c "grub-install /dev/$disk"
 arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
 arch-chroot /mnt /bin/bash -c "systemctl enable NetworkManager"
