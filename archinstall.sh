@@ -4,7 +4,7 @@
 #  Arch Linux Install (Archinstall)
 #------------------------------------------|
 #           :
-# Author    : Forked by Barry
+# Author    : Barry
 #           :
 # Based on  : https://github.com/linuxshef/archinstall
 #           :
@@ -42,6 +42,20 @@ echo '
          ─────────────────────────────────────────────────────────────────────────
 '
 setfont cyr-sun16
+clear
+echo '
+               ─▄▀─▄▀
+               ──▀──▀
+               █▀▀▀▀▀█▄
+               █░░░░░█─█     Добро пожаловать в программу установки ArchLinux !
+               ▀▄▄▄▄▄▀▀
+                 ────────────────────────────────────────────────────────────────
+                     Внимание !  скрипт НЕ создает разделы на диске , разделы вы
+                 создаёте сами , поэтому если вы еще не создали разделы - создайте их
+								 (Для автоматической разметки диска в папке settings есть btrfscreate)
+              ───────────────────────────────────────────────────────────────────────────
+'
+sleep 5 
 clear
 echo '
                                     Настройка часового пояса
@@ -203,8 +217,7 @@ arch-chroot /mnt /bin/bash -c "sed -i s/'#VerbosePkgLists'/'VerbosePkgLists'/g /
 arch-chroot /mnt /bin/bash -c "sed -i s/'#Color'/'Color\nILoveCandy'/g /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i '/\[multilib\]/,/Include/''s/^#//' /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i s/'# %wheel ALL=(ALL:ALL) ALL'/'%wheel ALL=(ALL:ALL) ALL'/g /etc/sudoers"
-arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm grub efibootmgr networkmanager bash-completion rsync reflector ntfs-3g xdg-user-dirs xdg-utils realtime-privileges archlinux-keyring xclip lrzip unrar unzip unace p7zip squashfs-tools"
-reflector --sort rate -l 10 --save /etc/pacman.d/mirrorlist
+arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm grub efibootmgr networkmanager bash-completion ntfs-3g xdg-user-dirs xdg-utils realtime-privileges archlinux-keyring xclip lrzip unrar unzip unace p7zip squashfs-tools gvfs"
 arch-chroot /mnt /bin/bash -c "pacman -Syy"
 clear
 echo '
@@ -415,7 +428,7 @@ echo '
 ░░░░░░░░░█░░░░█░░░░░░░░
 ███████▄▄█░░░░░██████▄░░
 ▓▓▓▓▓▓█░░░░░░░░░░░░░░█░
-▓▓▓▓▓▓█░░░░░░░░░░░░░░█░              Установка успешно завершена . Сейчас компьютер будет перезагружен .
+▓▓▓▓▓▓█░░░░░░░░░░░░░░█░              Установка успешно завершена
 ▓▓▓▓▓▓█░░░░░░░░░░░░░░█░
 ▓▓▓▓▓▓█░░░░░░░░░░░░░░█░
 ▓▓▓▓▓▓█░░░░░░░░░░░░░░█░
@@ -424,8 +437,10 @@ echo '
   <─────────────────────────────────────────────────────────────────────────────────────────────────────────>
 
 '
-sleep 5
+clear
+printf "Хотите ли вы перезагрузиться ? (y/N)"
+read -r reboot
 arch-chroot /mnt /bin/bash -c "exit"
 umount -R /mnt
 clear
-reboot
+[ "$(tr '[:upper:]' '[:lower:]' <<< "$reboot")" = "y" ] && reboot
