@@ -27,6 +27,20 @@ $$ |  $$ |$$ |      \$$$$$$$\ $$ |  $$ |$$ |$$ |  $$ |$$$$$$$  |  \$$$$  |\$$$$$
 sleep 2
 clear
 echo '
+               ─▄▀─▄▀
+               ──▀──▀
+               █▀▀▀▀▀█▄
+               █░░░░░█─█     Добро пожаловать в программу установки ArchLinux !
+               ▀▄▄▄▄▄▀▀
+                 ────────────────────────────────────────────────────────────────
+                     Внимание !  скрипт НЕ создает разделы на диске , разделы вы
+                 создаёте сами , поэтому если вы еще не создали разделы - создайте их
+				(Для автоматической разметки диска в папке settings есть btrfscreate)
+              ───────────────────────────────────────────────────────────────────────────
+'
+sleep 2 
+clear
+echo '
                                     ArchInstall
          ─────────────────────────────────────────────────────────────────────────
 
@@ -42,20 +56,6 @@ echo '
          ─────────────────────────────────────────────────────────────────────────
 '
 setfont cyr-sun16
-clear
-echo '
-               ─▄▀─▄▀
-               ──▀──▀
-               █▀▀▀▀▀█▄
-               █░░░░░█─█     Добро пожаловать в программу установки ArchLinux !
-               ▀▄▄▄▄▄▀▀
-                 ────────────────────────────────────────────────────────────────
-                     Внимание !  скрипт НЕ создает разделы на диске , разделы вы
-                 создаёте сами , поэтому если вы еще не создали разделы - создайте их
-								 (Для автоматической разметки диска в папке settings есть btrfscreate)
-              ───────────────────────────────────────────────────────────────────────────
-'
-sleep 5 
 clear
 echo '
                                     Настройка часового пояса
@@ -216,7 +216,6 @@ arch-chroot /mnt /bin/bash -c "sed -i s/'#ParallelDownloads = 5'/'ParallelDownlo
 arch-chroot /mnt /bin/bash -c "sed -i s/'#VerbosePkgLists'/'VerbosePkgLists'/g /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i s/'#Color'/'Color\nILoveCandy'/g /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i '/\[multilib\]/,/Include/''s/^#//' /etc/pacman.conf"
-arch-chroot /mnt /bin/bash -c "sed -i s/'# %wheel ALL=(ALL:ALL) ALL'/'%wheel ALL=(ALL:ALL) ALL'/g /etc/sudoers"
 arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm grub efibootmgr networkmanager bash-completion ntfs-3g xdg-user-dirs xdg-utils realtime-privileges archlinux-keyring xclip lrzip unrar unzip unace p7zip squashfs-tools gvfs"
 arch-chroot /mnt /bin/bash -c "pacman -Syy"
 clear
@@ -336,25 +335,25 @@ echo -e "\t
 echo -e "\t
                           -> Для установки KDE облегченная введите      ( 2 )
                                  
-																 Без пакета    kde-applicatios          "
+								Без пакета    kde-applicatios          "
 echo -e "\t
                                  -> Для установки GNOME введите         ( 3 )"
 echo -e "\t
                           -> Для установки GNOME облегченная введите    ( 4 )
                                   
-																	Без пакета gnome-extra                   "
+								Без пакета gnome-extra                   "
 echo -e "\t
                                  -> Для установки BUDGIE введите       ( 5 )"
 echo -e "\t
                           -> Для установки BUGDIE облегченная введите  ( 6 )
                                   
-																	Без пакета budgie-extras                   "
+								Без пакета budgie-extras                   "
 echo -e "\t
                                  -> Для установки XFCE введите        ( 7 )"
 echo -e "\t
                           -> Для установки XFCE облегченная введите   ( 8 )
                                   
-																	Без пакета xfce4-goodies                   "
+								Без пакета xfce4-goodies                   "
 echo -e "\t
                                  -> Для установки CINNAMON введите   ( 9 )"
 echo -e "\t
@@ -362,7 +361,7 @@ echo -e "\t
 echo -e "\t
                           -> Для установки MATE облегченная введите  ( 11 )
                                   
-																	Без пакета mate-extra                   "
+								Без пакета mate-extra                   "
 echo -e "\t
                                  -> XORG                            ( 12 )"
 echo -n "
@@ -380,47 +379,55 @@ read main_menu
          ;;
          "5" ) clear ; ./DE/budgie.sh
          ;;
-				 "6" ) clear ; ./DE/budgie_lite.sh
+		 "6" ) clear ; ./DE/budgie_lite.sh
          ;;
-				 "7" ) clear ; ./DE/xfce.sh
+		 "7" ) clear ; ./DE/xfce.sh
          ;;
-				 "8" ) clear ; ./DE/xfce_lite.sh
+		 "8" ) clear ; ./DE/xfce_lite.sh
          ;;
-				 "9" ) clear ; ./DE/cinnamon.sh
+		 "9" ) clear ; ./DE/cinnamon.sh
          ;;
-				 "10" ) clear ; ./DE/mate.sh
+		 "10" ) clear ; ./DE/mate.sh
          ;;
-				 "11" ) clear ; ./DE/mate_lite.sh
+		 "11" ) clear ; ./DE/mate_lite.sh
          ;;
          "12" ) clear ; arch-chroot /mnt /bin/bash -c "pacman -S xorg xorg-server xorg-xinit --noconfirm --needed"
       esac
 
 clear
+#----------------------------Time----------------------------------------------------------------------
 arch-chroot /mnt /bin/bash -c "ln -sf /usr/share/zoneinfo/$region /etc/localtime"
 arch-chroot /mnt /bin/bash -c "hwclock --systohc"
+#----------------------------Locale----------------------------------------------------------------------
 arch-chroot /mnt /bin/bash -c "sed -i s/'#en_US.UTF-8'/'en_US.UTF-8'/g /etc/locale.gen"
 arch-chroot /mnt /bin/bash -c "sed -i s/'#ru_RU.UTF-8'/'ru_RU.UTF-8'/g /etc/locale.gen"
 arch-chroot /mnt /bin/bash -c "locale-gen"
 arch-chroot /mnt /bin/bash -c "echo 'LANG=ru_RU.UTF-8' > /etc/locale.conf"
 arch-chroot /mnt /bin/bash -c "echo 'KEYMAP=ru' >> /etc/vconsole.conf"
 arch-chroot /mnt /bin/bash -c "echo 'FONT=cyr-sun16' >> /etc/vconsole.conf"
+#----------------------------Network----------------------------------------------------------------------
 arch-chroot /mnt /bin/bash -c "echo $hostname >> /etc/hostname"
 arch-chroot /mnt /bin/bash -c "echo '127.0.0.1 localhost' >> /etc/hosts"
 arch-chroot /mnt /bin/bash -c "echo '::1       localhost' >> /etc/hosts"
 arch-chroot /mnt /bin/bash -c "echo '127.0.1.1 $hostname.localdomain $hostname' >> /etc/hosts"
-arch-chroot /mnt /bin/bash -c "echo 'export EDITOR=micro' >> .profile"
-arch-chroot /mnt /bin/bash -c "echo -e 'export PATH=~/.local/bin/:\$PATH' >> .profile"
-arch-chroot /mnt /bin/bash -c "grub-install /dev/$disk"
-arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
 arch-chroot /mnt /bin/bash -c "systemctl enable NetworkManager"
-arch-chroot /mnt /bin/bash -c "useradd -m -G wheel,storage,realtime -s /bin/bash $username"
+#----------------------------GRUB----------------------------------------------------------------------
+arch-chroot /mnt /bin/bash -c "grub-install /dev/$disk"
+arch-chroot /mnt /bin/bash -c "sed -i s/'GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"
+'/'GRUB_CMDLINE_LINUX_DEFAULT="quiet splash raid=noautodetect mitigations=off preempt=none nowatchdog audit=0 split_lock_detect=off pci=pcie_bus_perf selinux=0"'/g /etc/default/grub"
+arch-chroot /mnt /bin/bash -c "sed -i s/'GRUB_TIMEOUT=5'/'GRUB_TIMEOUT=0'/g /etc/default/grub"
+arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
+#----------------------------Mkinitcpio----------------------------------------------------------------------
+arch-chroot /mnt /bin/bash -c "sed -i s/'HOOKS=(base udev autodetect modconf kms keyboard keymap consolefont block filesystems fsck)'/'HOOKS=(base udev autodetect modconf kms keyboard keymap block filesystems)'/g /etc/mkinitcpio.conf"
 arch-chroot /mnt /bin/bash -c "mkinitcpio -P"
+#----------------------------Accounts----------------------------------------------------------------------
+arch-chroot /mnt /bin/bash -c "useradd -m -G wheel,storage,realtime -s /bin/bash $username"
+arch-chroot /mnt /bin/bash -c "sed -i s/'# %wheel ALL=(ALL:ALL) ALL'/'%wheel ALL=(ALL:ALL) ALL'/g /etc/sudoers"
 echo "$username:$userpassword" | arch-chroot /mnt chpasswd
 echo "root:$password" | arch-chroot /mnt chpasswd
 clear
 echo '
-
-─────────────────────────────────────────────────────────────────────────────────────────────────────────────>
+───────────────────────────────────────────────────────────────────>
 ░░░░░░░░░░░░▄▄░░░░░░░░░
 ░░░░░░░░░░░█░░█░░░░░░░░
 ░░░░░░░░░░░█░░█░░░░░░░░
@@ -428,19 +435,16 @@ echo '
 ░░░░░░░░░█░░░░█░░░░░░░░
 ███████▄▄█░░░░░██████▄░░
 ▓▓▓▓▓▓█░░░░░░░░░░░░░░█░
-▓▓▓▓▓▓█░░░░░░░░░░░░░░█░              Установка успешно завершена
+▓▓▓▓▓▓█░░░░░░░░░░░░░░█░              Установка успешно завершена . Сейчас компьютер будет перезагружен .
 ▓▓▓▓▓▓█░░░░░░░░░░░░░░█░
 ▓▓▓▓▓▓█░░░░░░░░░░░░░░█░
 ▓▓▓▓▓▓█░░░░░░░░░░░░░░█░
 ▓▓▓▓▓▓█████░░░░░░░░░█░░
 ██████▀░░░░▀▀██████▀░░░░
   <─────────────────────────────────────────────────────────────────────────────────────────────────────────>
-
 '
-clear
-printf "Хотите ли вы перезагрузиться ? (y/N)"
-read -r reboot
+sleep 5
 arch-chroot /mnt /bin/bash -c "exit"
 umount -R /mnt
 clear
-[ "$(tr '[:upper:]' '[:lower:]' <<< "$reboot")" = "y" ] && reboot
+reboot
