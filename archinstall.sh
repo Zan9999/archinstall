@@ -35,7 +35,7 @@ echo '
                  ────────────────────────────────────────────────────────────────
                      Внимание !  скрипт НЕ создает разделы на диске , разделы вы
                  создаёте сами , поэтому если вы еще не создали разделы - создайте их
-				(Для автоматической разметки диска в папке settings есть btrfscreate)
+				 (Для автоматической разметки диска в папке scripts есть btrfscreate)
               ───────────────────────────────────────────────────────────────────────────
 '
 sleep 2 
@@ -278,11 +278,11 @@ echo -n "
                           -> Введите значение : "
 read main_menu
       case "$main_menu" in
-         "1" ) ./settings/intel_drivers.sh
+         "1" ) ./scripts/intel_drivers.sh
         ;;
-         "2" ) ./settings/amd_drivers.sh
+         "2" ) ./scripts/amd_drivers.sh
         ;;
-         "3" ) ./settings/nvidia_drivers.sh
+         "3" ) ./scripts/nvidia_drivers.sh
       esac
 
 clear
@@ -312,9 +312,9 @@ echo -n "
                           -> Введите значение : "
 read main_menu
       case "$main_menu" in
-         "1" ) arch-chroot /mnt /bin/bash -c "pacman -S intel-ucode --noconfirm"
+         "1" ) arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm intel-ucode"
         ;;
-         "2" ) arch-chroot /mnt /bin/bash -c "pacman -S amd-ucode --noconfirm"
+         "2" ) arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm amd-ucode"
       esac
 
 clear
