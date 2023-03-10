@@ -296,11 +296,11 @@ echo -n "
                          -> Введите значение : "
 read main_menu
       case "$main_menu" in
-       "1" ) ./scripts/nvidia-dkms_driver
+       "1" ) ./scripts/nvidia-dkms_driver.sh
        ;;
-       "2" ) ./scripts/nvidia-nouveau_driver
+       "2" ) ./scripts/nvidia-nouveau_driver.sh
        ;;
-       "3" ) ./scripts/nvidia-open_driver
+       "3" ) ./scripts/nvidia-open_driver.sh
      esac
       esac
 
