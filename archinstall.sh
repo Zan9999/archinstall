@@ -190,8 +190,7 @@ arch-chroot /mnt /bin/bash -c "sed -i s/'#ParallelDownloads = 5'/'ParallelDownlo
 arch-chroot /mnt /bin/bash -c "sed -i s/'#VerbosePkgLists'/'VerbosePkgLists'/g /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i s/'#Color'/'Color\nILoveCandy'/g /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i '/\[multilib\]/,/Include/''s/^#//' /etc/pacman.conf"
-arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm grub efibootmgr networkmanager bash-completion ntfs-3g xdg-user-dirs xdg-utils realtime-privileges archlinux-keyring xclip lrzip zip unrar unzip unace p7zip squashfs-tools gvfs hunspell hunspell-en_us hunspell-ru"
-arch-chroot /mnt /bin/bash -c "pacman -Syy"
+arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm grub efibootmgr networkmanager bash-completion ntfs-3g xdg-user-dirs xdg-utils realtime-privileges archlinux-keyring xclip lrzip zip unrar unzip unace p7zip squashfs-tools gvfs hunspell hunspell-en_us hunspell-ru xorg xorg-server xorg-xinit"
 clear
 echo '
                                       Звуковой сервер
@@ -302,8 +301,9 @@ read main_menu
        ;;
        "3" ) ./scripts/nvidia-open_driver.sh
      esac
+     clear
       esac
-
+clear
 echo '
                                      Микрокод для процессора
 
@@ -342,6 +342,42 @@ echo '
                                    Графическая оболочка
                 .────────────────────────────────────────────────────────.
                 .                                                        .
+                .            Теперь выберите один из вариантов           .
+                .                                                        .
+                .      Для установки нужной вам графической оболочки     .
+                .                                                        .
+                .               (Для пропуска нажмите 7)                 .
+                .                                                        .
+                .────────────────────────────────────────────────────────.
+'
+echo -e "\t
+
+                          -> Для установки KDE введите                  ( 1 )"
+echo -e "\t
+
+                          -> Для установки GNOME введите                ( 2 )"
+echo -e "\t
+
+                          -> Для установки BUDGIE введите               ( 3 )"
+echo -e "\t
+
+                          -> Для установки XFCE введите                 ( 4 )"
+echo -e "\t
+
+                          -> Для установки CINNAMON введите             ( 5 )"
+echo -e "\t
+
+                          -> Для установки MATE введите                 ( 6 )"
+
+echo -n "
+
+                          -> Введите значение : "
+read main_menu
+      case "$main_menu" in
+
+         "1" ) clear ; echo '
+                                          KDE
+                .────────────────────────────────────────────────────────.
                 .                                                        .
                 .            Теперь выберите один из вариантов           .
                 .                                                        .
@@ -358,75 +394,146 @@ echo -e "\t
                           -> Для установки KDE облегченная введите      ( 2 )
 
                                 Без пакета    kde-applicatios"
-echo -e "\t
 
-                          -> Для установки GNOME введите                ( 3 )"
-echo -e "\t
-
-                          -> Для установки GNOME облегченная введите    ( 4 )
-
-                                Без пакета gnome-extra"
-echo -e "\t
-
-                          -> Для установки BUDGIE введите               ( 5 )"
-echo -e "\t
-
-                          -> Для установки BUGDIE облегченная введите   ( 6 )
-
-                                Без пакета budgie-extras"
-echo -e "\t
-
-                          -> Для установки XFCE введите                 ( 7 )"
-echo -e "\t
-
-                          -> Для установки XFCE облегченная введите     ( 8 )
-
-                                Без пакета xfce4-goodies"
-echo -e "\t
-
-                          -> Для установки CINNAMON введите             ( 9 )"
-echo -e "\t
-
-                          -> Для установки MATE введите                 ( 10 )"
-echo -e "\t
-
-                          -> Для установки MATE облегченная введите     ( 11 )
-
-                                Без пакета mate-extra"
-echo -e "\t
-
-                          -> XORG                                       ( 12 )"
 echo -n "
 
                           -> Введите значение : "
 read main_menu
       case "$main_menu" in
+         "1" ) ./DE/kde.sh
+         ;;
+         "2" ) ./DE/kde_lite.sh
+         clear
+         esac
+         ;;
+         "2" ) clear ; echo '
+                                          GNOME
+                .────────────────────────────────────────────────────────.
+                .                                                        .
+                .            Теперь выберите один из вариантов           .
+                .                                                        .
+                .      Для установки нужной вам графической оболочки     .
+                .                                                        .
+                .                                                        .
+                .────────────────────────────────────────────────────────.
+'
+echo -e "\t
 
-         "1" ) clear ; ./DE/kde.sh
-         ;;
-         "2" ) clear ; ./DE/kde_lite.sh
-         ;;
-         "3" ) clear ; ./DE/gnome.sh
-         ;;
-         "4" ) clear ; ./DE/gnome_lite.sh
-         ;;
-         "5" ) clear ; ./DE/budgie.sh
-         ;;
-         "6" ) clear ; ./DE/budgie_lite.sh
-         ;;
-         "7" ) clear ; ./DE/xfce.sh
-         ;;
-         "8" ) clear ; ./DE/xfce_lite.sh
-         ;;
-         "9" ) clear ; ./DE/cinnamon.sh
-         ;;
-         "10" ) clear ; ./DE/mate.sh
-         ;;
-         "11" ) clear ; ./DE/mate_lite.sh
-         ;;
-         "12" ) clear ; arch-chroot /mnt /bin/bash -c "pacman -S xorg xorg-server xorg-xinit --noconfirm --needed"
-      esac
+                          -> Для установки GNOME введите                ( 1 )"
+echo -e "\t
 
+                          -> Для установки GNOME облегченная введите    ( 2 )
+
+                                Без пакета gnome-extra"
+
+echo -n "
+
+                          -> Введите значение : "
+read main_menu
+      case "$main_menu" in
+         "1" ) ./DE/gnome.sh
+         ;;
+         "2" ) ./DE/gnome_lite.sh
+         clear
+         esac
+         ;;
+         "3" ) clear ; echo '
+                                          BUDGIE
+                .────────────────────────────────────────────────────────.
+                .                                                        .
+                .            Теперь выберите один из вариантов           .
+                .                                                        .
+                .      Для установки нужной вам графической оболочки     .
+                .                                                        .
+                .                                                        .
+                .────────────────────────────────────────────────────────.
+'
+echo -e "\t
+
+                          -> Для установки BUDGIE введите               ( 1 )"
+echo -e "\t
+
+                          -> Для установки BUGDIE облегченная введите   ( 2 )
+
+                                Без пакета budgie-extras"
+
+echo -n "
+
+                          -> Введите значение : "
+read main_menu
+      case "$main_menu" in
+         "1" ) ./DE/budgie.sh
+         ;;
+         "2" ) ./DE/budgie_lite.sh
+         clear
+         esac
+         ;;
+         "4" ) clear ; echo '
+                                          XFCE
+                .────────────────────────────────────────────────────────.
+                .                                                        .
+                .            Теперь выберите один из вариантов           .
+                .                                                        .
+                .      Для установки нужной вам графической оболочки     .
+                .                                                        .
+                .                                                        .
+                .────────────────────────────────────────────────────────.
+'
+echo -e "\t
+
+                          -> Для установки XFCE введите                 ( 1 )"
+echo -e "\t
+
+                          -> Для установки XFCE облегченная введите     ( 2 )
+
+                                Без пакета xfce4-goodies"
+
+echo -n "
+
+                          -> Введите значение : "
+read main_menu
+      case "$main_menu" in
+         "1" ) ./DE/xfce.sh
+         ;;
+         "2" ) ./DE/xfce_lite.sh
+         clear
+         esac
+         ;;
+         "5" ) clear ; ./DE/cinnamon.sh
+         ;;
+         "6" ) clear ; echo '
+                                          MATE
+                .────────────────────────────────────────────────────────.
+                .                                                        .
+                .            Теперь выберите один из вариантов           .
+                .                                                        .
+                .      Для установки нужной вам графической оболочки     .
+                .                                                        .
+                .                                                        .
+                .────────────────────────────────────────────────────────.
+'
+echo -e "\t
+
+                          -> Для установки MATE введите                 ( 1 )"
+echo -e "\t
+
+                          -> Для установки MATE облегченная введите     ( 2 )
+
+                                Без пакета mate-extra"
+
+echo -n "
+
+                          -> Введите значение : "
+read main_menu
+      case "$main_menu" in
+         "1" ) ./DE/mate.sh
+         ;;
+         "2" ) ./DE/mate_lite.sh
+         clear
+         esac
+         ;;
+         "7" ) clear
+       esac
 clear
 #----------------------------Time----------------------------------------------------------------------
 arch-chroot /mnt /bin/bash -c "ln -sf /usr/share/zoneinfo/$region /etc/localtime"
