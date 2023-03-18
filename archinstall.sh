@@ -12,6 +12,9 @@
 #           :
 #----------------------------------------------------------------------|
 setfont cyr-sun16
+pacman-key --keyserver hkps://keyserver.ubuntu.com --recv-keys 9AE4078033F8024D
+pacman-key --lsign-key 9AE4078033F8024D
+echo -e '\n[liquorix]\nServer = https://liquorix.net/archlinux/$repo/$arch'
 clear
 echo '
                ─▄▀─▄▀
@@ -141,6 +144,8 @@ echo '
               .                                                              .
               .   -> С ядром повышеной стабильности Linux-lts - введите 3    .
               .                                                              .
+              .   -> C производительным ядром Liquorix - введите 4           .
+              .                                                              .
               .                                                              .
               .──────────────────────────────────────────────────────────────.
 '
@@ -153,6 +158,10 @@ echo -e "\t
 echo -e "\t
 
                                  -> Linux-lts ( 3 )"
+echo -e "\t
+
+                                 -> Liquorix  ( 4 )"
+
 echo -n "
 
                                  -> Введите значение : "
@@ -164,6 +173,9 @@ read main_menu
          "2" ) clear ; pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware dosfstools mtools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
          ;;
          "3" ) clear ; pacstrap /mnt base base-devel linux-lts linux-lts-headers linux-firmware dosfstools mtools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
+         ;;
+         "4" ) clear ; pacstrap /mnt base base-devel linux-lqx linux-lqx-headers linux-firmware dosfstools mtools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
+      kernel="lqx"
       esac
 
 clear
@@ -538,6 +550,13 @@ clear
 #----------------------------Time----------------------------------------------------------------------
 arch-chroot /mnt /bin/bash -c "ln -sf /usr/share/zoneinfo/$region /etc/localtime"
 arch-chroot /mnt /bin/bash -c "hwclock --systohc"
+#----------------------------Kernel----------------------------------------------------------------------
+if [[ "$kernel" == "lqx" ]]; then
+  ./scripts/lqx.sh
+else
+  echo "lqx install not selected"
+fi
+clear
 #----------------------------Locale----------------------------------------------------------------------
 arch-chroot /mnt /bin/bash -c "sed -i s/'#en_US.UTF-8'/'en_US.UTF-8'/g /etc/locale.gen"
 arch-chroot /mnt /bin/bash -c "sed -i s/'#ru_RU.UTF-8'/'ru_RU.UTF-8'/g /etc/locale.gen"

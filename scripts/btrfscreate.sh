@@ -45,7 +45,7 @@ echo '
       .                  Например ( sda2, sdb2, sdc2 , nvme0n1p2 )                     .
       .                                                                                .
       .                                                                                .
-      .                (Swap file - размер файла подкачки для EXT4 в mb)               .
+      .                (Swap file - размер файла подкачки для EXT4)               .
       .                                                                                .
       .                                                                                .
       .                                                                                .
@@ -203,7 +203,7 @@ mount -o rw,relatime,compress=zstd:2,ssd_spread,max_inline=256,commit=120,subvol
 clear
        esac
         ;;
-        "2" ) mkfs.ext4 -f /dev/$root ; dd if=/dev/zero of=/swapfile bs=1M count=$swap_file status=progress ; chmod 0600 /swapfile ; mkswap -U clear /swapfile ; swapon /swapfile ; clear
+        "2" ) mkfs.ext4 -f /dev/$root ; fallocate -l $swap_file /swapfile ; chmod 600 /swapfile ; mkswap /swapfile ; swapon /swapfile ; clear
       esac
 clear
 echo '
