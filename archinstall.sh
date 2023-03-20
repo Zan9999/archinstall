@@ -14,7 +14,7 @@
 setfont cyr-sun16
 pacman-key --keyserver hkps://keyserver.ubuntu.com --recv-keys 9AE4078033F8024D
 pacman-key --lsign-key 9AE4078033F8024D
-echo -e '\n[liquorix]\nServer = https://liquorix.net/archlinux/$repo/$arch'
+echo -e '\n[liquorix]\nServer = https://liquorix.net/archlinux/$repo/$arch' >> /etc/pacman.conf
 clear
 echo '
                ─▄▀─▄▀
@@ -90,7 +90,6 @@ clear
 echo '
                                         Пароль root
                 .───────────────────────────────────────────────────────────.
-                .                                                           .
                 .                                                           .
                 .                   Укажите пароль Root !                   .
                 .                                                           .
@@ -573,8 +572,8 @@ arch-chroot /mnt /bin/bash -c "systemctl enable NetworkManager"
 #----------------------------GRUB----------------------------------------------------------------------
 arch-chroot /mnt /bin/bash -c "grub-install /dev/$disk"
 arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
-#----------------------------Mkinitcpio----------------------------------------------------------------------
-arch-chroot /mnt /bin/bash -c "sed -i s/'HOOKS=(base udev autodetect modconf kms keyboard keymap consolefont block filesystems fsck)'/'HOOKS=(base udev autodetect modconf keyboard keymap block filesystems)'/g /etc/mkinitcpio.conf"
+#----------------------------initcpio----------------------------------------------------------------------
+arch-chroot /mnt /bin/bash -c "sed -i s/'HOOKS=(base udev autodetect modconf kms keyboard keymap consolefont block filesystems fsck)'/'HOOKS=(base udev autodetect modconf kms keyboard keymap block filesystems)'/g /etc/mkinitcpio.conf"
 arch-chroot /mnt /bin/bash -c "mkinitcpio -P"
 #----------------------------Accounts----------------------------------------------------------------------
 arch-chroot /mnt /bin/bash -c "useradd -m -G wheel,storage,realtime -s /bin/bash $username"
