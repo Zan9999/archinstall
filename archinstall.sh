@@ -173,8 +173,7 @@ read main_menu
          ;;
          "3" ) clear ; pacstrap /mnt base base-devel linux-lts linux-lts-headers linux-firmware dosfstools mtools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
          ;;
-         "4" ) clear ; pacstrap /mnt base base-devel linux-lqx linux-lqx-headers linux-firmware dosfstools mtools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
-      kernel="lqx"
+         "4" ) clear ; pacstrap /mnt base base-devel linux-lqx linux-lqx-headers linux-firmware dosfstools mtools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm ;  kernel="lqx"
       esac
 
 clear
@@ -201,7 +200,7 @@ arch-chroot /mnt /bin/bash -c "sed -i s/'#ParallelDownloads = 5'/'ParallelDownlo
 arch-chroot /mnt /bin/bash -c "sed -i s/'#VerbosePkgLists'/'VerbosePkgLists'/g /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i s/'#Color'/'Color\nILoveCandy'/g /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i '/\[multilib\]/,/Include/''s/^#//' /etc/pacman.conf"
-arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm grub efibootmgr networkmanager bash-completion ntfs-3g xdg-user-dirs xdg-utils realtime-privileges archlinux-keyring xclip lrzip zip unrar unzip unace p7zip squashfs-tools gvfs hunspell hunspell-en_us hunspell-ru xorg xorg-server xorg-xinit"
+arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm grub efibootmgr networkmanager bash-completion ntfs-3g xdg-user-dirs xdg-utils xdg-user-dirs-gtk realtime-privileges xclip lrzip zip unrar unzip unace p7zip squashfs-tools gvfs gvfs-afc gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb alsa alsa-utils alsa-firmware alsa-card-profiles alsa-plugins hunspell hunspell-en_us hunspell-ru xorg xorg-server xorg-xinit"
 clear
 echo '
                                       Звуковой сервер
@@ -551,7 +550,7 @@ arch-chroot /mnt /bin/bash -c "ln -sf /usr/share/zoneinfo/$region /etc/localtime
 arch-chroot /mnt /bin/bash -c "hwclock --systohc"
 #----------------------------Kernel----------------------------------------------------------------------
 if [[ "$kernel" == "lqx" ]]; then
-  ./scripts/lqx.sh
+  arch-chroot /mnt /bin/bash -c "echo -e '\n[liquorix]\nServer = https://liquorix.net/archlinux/$repo/$arch' >> /etc/pacman.conf"
 else
   echo "lqx install not selected"
 fi
