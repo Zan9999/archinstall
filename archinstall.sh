@@ -12,9 +12,6 @@
 #           :
 #----------------------------------------------------------------------|
 setfont cyr-sun16
-pacman-key --keyserver hkps://keyserver.ubuntu.com --recv-keys 9AE4078033F8024D
-pacman-key --lsign-key 9AE4078033F8024D
-echo -e '\n[liquorix]\nServer = https://liquorix.net/archlinux/$repo/$arch' >> /etc/pacman.conf
 clear
 echo '
                ─▄▀─▄▀
@@ -143,8 +140,6 @@ echo '
               .                                                              .
               .   -> С ядром повышеной стабильности Linux-lts - введите 3    .
               .                                                              .
-              .   -> C производительным ядром Liquorix - введите 4           .
-              .                                                              .
               .                                                              .
               .──────────────────────────────────────────────────────────────.
 '
@@ -157,9 +152,6 @@ echo -e "\t
 echo -e "\t
 
                                  -> Linux-lts ( 3 )"
-echo -e "\t
-
-                                 -> Liquorix  ( 4 )"
 
 echo -n "
 
@@ -172,8 +164,6 @@ read main_menu
          "2" ) clear ; pacstrap /mnt base base-devel linux-zen linux-zen-headers linux-firmware dosfstools mtools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
          ;;
          "3" ) clear ; pacstrap /mnt base base-devel linux-lts linux-lts-headers linux-firmware dosfstools mtools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
-         ;;
-         "4" ) clear ; pacstrap /mnt base base-devel linux-lqx linux-lqx-headers linux-firmware dosfstools mtools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm ;  kernel="lqx"
       esac
 
 clear
@@ -200,7 +190,7 @@ arch-chroot /mnt /bin/bash -c "sed -i s/'#ParallelDownloads = 5'/'ParallelDownlo
 arch-chroot /mnt /bin/bash -c "sed -i s/'#VerbosePkgLists'/'VerbosePkgLists'/g /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i s/'#Color'/'Color\nILoveCandy'/g /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i '/\[multilib\]/,/Include/''s/^#//' /etc/pacman.conf"
-arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm grub efibootmgr networkmanager bash-completion ntfs-3g xdg-user-dirs xdg-utils xdg-user-dirs-gtk realtime-privileges xclip lrzip zip unrar unzip unace p7zip squashfs-tools gvfs gvfs-afc gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb alsa alsa-utils alsa-firmware alsa-card-profiles alsa-plugins hunspell hunspell-en_us hunspell-ru xorg xorg-server xorg-xinit"
+arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm grub efibootmgr networkmanager bash-completion ntfs-3g os-prober xdg-user-dirs xdg-utils realtime-privileges xclip lrzip zip unrar unzip unace p7zip squashfs-tools gvfs gvfs-afc gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb hunspell hunspell-en_us hunspell-ru xorg xorg-server xorg-xinit"
 clear
 echo '
                                       Звуковой сервер
@@ -229,9 +219,9 @@ echo -n "
                           -> Введите значение : "
 read main_menu
       case "$main_menu" in
-         "1" ) arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm pulseaudio pulseaudio-alsa pulseaudio-jack pulseaudio-bluetooth"
+         "1" ) arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm alsa alsa-utils alsa-firmware alsa-card-profiles alsa-plugins pulseaudio pulseaudio-alsa pulseaudio-jack pulseaudio-bluetooth"
         ;;
-         "2" ) arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm pipewire pipewire-pulse pipewire-alsa pipewire-jack"
+         "2" ) arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm alsa alsa-utils alsa-firmware alsa-card-profiles alsa-plugins pipewire pipewire-pulse pipewire-alsa pipewire-jack"
       esac
 
 clear
@@ -548,13 +538,6 @@ clear
 #----------------------------Time----------------------------------------------------------------------
 arch-chroot /mnt /bin/bash -c "ln -sf /usr/share/zoneinfo/$region /etc/localtime"
 arch-chroot /mnt /bin/bash -c "hwclock --systohc"
-#----------------------------Kernel----------------------------------------------------------------------
-if [[ "$kernel" == "lqx" ]]; then
-  arch-chroot /mnt /bin/bash -c "echo -e '\n[liquorix]\nServer = https://liquorix.net/archlinux/$repo/$arch' >> /etc/pacman.conf"
-else
-  echo "lqx install not selected"
-fi
-clear
 #----------------------------Locale----------------------------------------------------------------------
 arch-chroot /mnt /bin/bash -c "sed -i s/'#en_US.UTF-8'/'en_US.UTF-8'/g /etc/locale.gen"
 arch-chroot /mnt /bin/bash -c "sed -i s/'#ru_RU.UTF-8'/'ru_RU.UTF-8'/g /etc/locale.gen"
