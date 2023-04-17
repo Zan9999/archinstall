@@ -190,7 +190,7 @@ arch-chroot /mnt /bin/bash -c "sed -i s/'#ParallelDownloads = 5'/'ParallelDownlo
 arch-chroot /mnt /bin/bash -c "sed -i s/'#VerbosePkgLists'/'VerbosePkgLists'/g /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i s/'#Color'/'Color\nILoveCandy'/g /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i '/\[multilib\]/,/Include/''s/^#//' /etc/pacman.conf"
-arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm grub efibootmgr networkmanager bash-completion ntfs-3g os-prober xdg-user-dirs xdg-utils realtime-privileges xclip lrzip zip unrar unzip unace p7zip squashfs-tools gvfs gvfs-afc gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb hunspell hunspell-en_us hunspell-ru xorg xorg-server xorg-xinit"
+arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm grub efibootmgr firefox firefox-i18n-ru networkmanager bash-completion ntfs-3g os-prober xdg-user-dirs xdg-utils realtime-privileges xclip lrzip zip unrar unzip unace p7zip squashfs-tools gvfs gvfs-afc gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb hunspell qt5ct gstreamer gst-plugins-bad gst-plugins-base gst-plugins-good hunspell-en_us hunspell-ru xorg xorg-server xorg-xinit"
 clear
 echo '
                                       Звуковой сервер
@@ -562,6 +562,8 @@ arch-chroot /mnt /bin/bash -c "useradd -m -G wheel,storage,realtime -s /bin/bash
 arch-chroot /mnt /bin/bash -c "sed -i s/'# %wheel ALL=(ALL:ALL) ALL'/'%wheel ALL=(ALL:ALL) ALL'/g /etc/sudoers"
 echo "$username:$userpassword" | arch-chroot /mnt chpasswd
 echo "root:$password" | arch-chroot /mnt chpasswd
+arch-chroot /mnt /bin/bash -c "mkdir -p /home/$username"
+arch-chroot /mnt /bin/bash -c "echo -e 'export EDITOR=/usr/bin/micro\nexport BROWSER=firefox\nexport QT_QPA_PLATFORMTHEME=qt5c' > /home/$username/.profile"
 clear
 echo '
 ───────────────────────────────────────────────────────────────────────────────────────────────────────────>
