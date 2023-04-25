@@ -9,8 +9,10 @@ if [[ $DESKTOP_SESSION == "gnome" ]]; then
     export XCURSOR_THEME=breeze
     export XCURSOR_SIZE=24
 fi
-    # QT_QPA_PLATFORM='xcb' best for KDE Framework apps
+    # fallback to Xwayland for Qt applications 
     export QT_QPA_PLATFORM="wayland;xcb"
     export WINIT_UNIX_BACKEND=x11 # Workaround for Alacritty title bar
     export MOZ_ENABLE_WAYLAND=1
+    export WLR_NO_HARDWARE_CURSORS=1 
+    export KITTY_ENABLE_WAYLAND=1
 fi

@@ -563,7 +563,7 @@ arch-chroot /mnt /bin/bash -c "useradd -m -G wheel,storage,realtime,rfkill -s /b
 arch-chroot /mnt /bin/bash -c "sed -i s/'# %wheel ALL=(ALL:ALL) ALL'/'%wheel ALL=(ALL:ALL) ALL'/g /etc/sudoers"
 echo "$username:$userpassword" | arch-chroot /mnt chpasswd
 echo "root:$password" | arch-chroot /mnt chpasswd
-cp -rf tweaks/profile.d /mnt/etc/profile.d
+cp -rf tweaks/profile.d/* /mnt/etc/profile.d/
 clear
 echo '
 ───────────────────────────────────────────────────────────────────────────────────────────────────────────>
