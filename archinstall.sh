@@ -249,7 +249,10 @@ echo -e "\t
                           -> Для графики AMD введите      ( 2 )"
 echo -e "\t
 
-                          -> Для графики Nvidia введите   ( 3 ) "
+                          -> Для VBOX введите      		  ( 3 )"
+echo -e "\t
+
+                          -> Для графики Nvidia введите   ( 4 )"
 echo -n "
 
                           -> Введите значение : "
@@ -259,7 +262,9 @@ read main_menu
          ;;
          "2" ) ./scripts/amd_driver.sh
          ;;
-         "3" )
+		 "3" ) ./script/vbox.sh
+         ;;
+         "4" )
 clear
 echo '
                       Добро пожаловать в меню установки драйвера NVIDIA
@@ -556,7 +561,6 @@ arch-chroot /mnt /bin/bash -c "systemctl enable NetworkManager bluetooth"
 arch-chroot /mnt /bin/bash -c "grub-install /dev/$disk"
 arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
 #----------------------------initcpio----------------------------------------------------------------------
-arch-chroot /mnt /bin/bash -c "sed -i s/'HOOKS=(base udev autodetect modconf kms keyboard keymap consolefont block filesystems fsck)'/'HOOKS=(base udev autodetect modconf kms keyboard keymap block filesystems)'/g /etc/mkinitcpio.conf"
 arch-chroot /mnt /bin/bash -c "mkinitcpio -P"
 #----------------------------Accounts----------------------------------------------------------------------
 arch-chroot /mnt /bin/bash -c "useradd -m -G wheel,storage,realtime,rfkill -s /bin/bash $username"
