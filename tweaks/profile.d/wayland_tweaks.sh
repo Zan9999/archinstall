@@ -5,7 +5,6 @@ if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
 		export __GLX_VENDOR_LIBRARY_NAME=nvidia
 	fi
 if [[ $DESKTOP_SESSION == "gnome" ]]; then
-    export QT_STYLE_OVERRIDE=adwaita-dark
     export XCURSOR_THEME=breeze
     export XCURSOR_SIZE=24
 fi
