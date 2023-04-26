@@ -191,7 +191,37 @@ arch-chroot /mnt /bin/bash -c "sed -i s/'#VerbosePkgLists'/'VerbosePkgLists'/g /
 arch-chroot /mnt /bin/bash -c "sed -i s/'#Color'/'Color\nILoveCandy'/g /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i s/'CheckSpace'/'#CheckSpace'/g /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i '/\[multilib\]/,/Include/''s/^#//' /etc/pacman.conf"
-arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm bluez-utils bluez grub efibootmgr firefox firefox-i18n-ru networkmanager bash-completion ntfs-3g os-prober xdg-user-dirs xdg-utils realtime-privileges xclip lrzip zip unrar unzip unace p7zip squashfs-tools gvfs gvfs-afc gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb hunspell kvantum gstreamer gst-plugins-bad gst-plugins-pipewire gst-plugins-base gst-plugins-good hunspell-en_us hunspell-ru xorg xorg-server xorg-xinit"
+arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm bluez-utils bluez grub efibootmgr firefox firefox-i18n-ru networkmanager bash-completion ntfs-3g os-prober xdg-user-dirs xdg-utils realtime-privileges xclip lrzip zip unrar unzip unace p7zip squashfs-tools gvfs gvfs-afc gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb hunspell kvantum qt6-svg gstreamer gst-plugins-bad gst-plugin-pipewire gst-plugins-base gst-plugins-good hunspell-en_us hunspell-ru xorg xorg-server xorg-xinit"
+clear
+echo '
+                                      Chaotic-AUR
+
+              .─────────────────────────────────────────────────────────────────────.
+              .                                                                     .
+              .                                                                     .
+              .               Подключить репозиторий Chaotic-AUR ?                  .
+              .                                                                     .
+              .                                                                     .
+              .─────────────────────────────────────────────────────────────────────.
+
+'
+echo -e "\t
+
+                          -> Да     ( 1 )"
+echo -e "\t
+
+
+                          -> Нет   ( 2 )"
+echo -n "
+
+                          -> Введите значение : "
+read main_menu
+      case "$main_menu" in
+         "1" ) ./scripts/chaotic-aur.sh
+         ;;
+         "2" ) clear
+      esac
+
 clear
 echo '
                                       Звуковой сервер
@@ -249,7 +279,7 @@ echo -e "\t
                           -> Для графики AMD введите      ( 2 )"
 echo -e "\t
 
-                          -> Для VBOX введите      		  ( 3 )"
+                          -> Для VBOX введите             ( 3 )"
 echo -e "\t
 
                           -> Для графики Nvidia введите   ( 4 )"
@@ -262,7 +292,7 @@ read main_menu
          ;;
          "2" ) ./scripts/amd_driver.sh
          ;;
-		 "3" ) ./script/vbox.sh
+         "3" ) ./script/vbox.sh
          ;;
          "4" )
 clear
