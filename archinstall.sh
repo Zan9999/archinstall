@@ -467,9 +467,9 @@ echo -n "
                           -> Введите значение : "
 read main_menu
       case "$main_menu" in
-         "1" ) ./DE/gnome.sh
+         "1" ) ./DE/gnome.sh ; cp -rf ./tweaks/nautilus/* /home/$username/.local/share/nautilus-python/extensions/
          ;;
-         "2" ) ./DE/gnome_lite.sh
+         "2" ) ./DE/gnome_lite.sh ; cp -rf ./tweaks/nautilus/* /home/$username/.local/share/nautilus-python/extensions/
          clear
          esac
          ;;
@@ -591,6 +591,7 @@ arch-chroot /mnt /bin/bash -c "systemctl enable NetworkManager bluetooth"
 arch-chroot /mnt /bin/bash -c "grub-install /dev/$disk"
 arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
 #----------------------------initcpio----------------------------------------------------------------------
+arch-chroot /mnt /bin/bash -c "sed -i s/'BINARIES=()'/'BINARIES=(setfont)'/g /etc/mkinitcpio.conf"
 arch-chroot /mnt /bin/bash -c "mkinitcpio -P"
 #----------------------------Accounts----------------------------------------------------------------------
 arch-chroot /mnt /bin/bash -c "useradd -m -G wheel,storage,realtime,rfkill -s /bin/bash $username"
