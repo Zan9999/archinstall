@@ -318,13 +318,19 @@ echo '
 '
 echo -e "\t
 
-                         ->  Установить проприетарный драйвер     1"
+                         ->  Установить проприетарный драйвер              1"
 echo -e "\t
 
-                         ->  Установить открытый драйвер          2"
+                         ->  Установить открытый драйвер                   2"
 echo -e "\t
 
-                         ->  Установить nvidia-open               3"
+                         ->  Установить nvidia-open                        3"
+echo -e "\t
+
+                         ->  Установить nvidia-dkms + intel                4"
+echo -e "\t
+
+                         ->  Установить nvidia-open + intel                5"
 
 echo -n "
 
@@ -336,6 +342,10 @@ read main_menu
        "2" ) ./scripts/nvidia-nouveau_driver.sh
        ;;
        "3" ) ./scripts/nvidia-open_driver.sh
+       ;;
+       "4" ) ./scripts/nvidia-dmks_driver.sh ; ./scripts/intel_driver.sh
+       ;;
+       "5" ) ./scripts/nvidia-open_driver.sh ; ./scripts/intel_driver.sh
      esac
      clear
       esac
