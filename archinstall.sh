@@ -273,16 +273,20 @@ echo '
 '
 echo -e "\t
 
-                          -> Для графики Intel введите    ( 1 )"
+                          -> Для графики Intel введите      ( 1 )"
 echo -e "\t
 
-                          -> Для графики AMD введите      ( 2 )"
+                          -> Для графики AMD введите         ( 2 )"
 echo -e "\t
 
-                          -> Для VBOX введите             ( 3 )"
+                          -> Для VBOX введите                ( 3 )"
 echo -e "\t
 
-                          -> Для графики Nvidia введите   ( 4 )"
+                          -> Для графики Nvidia введите      ( 4 )"
+echo -e "\t
+
+                          -> Для гибридной графики введите   ( 5 )"
+
 echo -n "
 
                           -> Введите значение : "
@@ -325,30 +329,67 @@ echo -e "\t
 echo -e "\t
 
                          ->  Установить nvidia-open                        3"
-echo -e "\t
-
-                         ->  Установить nvidia-dkms + intel                4"
-echo -e "\t
-
-                         ->  Установить nvidia-open + intel                5"
-
 echo -n "
 
                          -> Введите значение : "
 read main_menu
       case "$main_menu" in
-       "1" ) ./scripts/nvidia-dkms_driver.sh
+       "1" ) ./scripts/nvidia/nvidia-dkms_driver.sh
        ;;
-       "2" ) ./scripts/nvidia-nouveau_driver.sh
+       "2" ) ./scripts/nvidia/nvidia-nouveau_driver.sh
        ;;
        "3" ) ./scripts/nvidia-open_driver.sh
-       ;;
-       "4" ) ./scripts/nvidia-dmks_driver.sh ; ./scripts/intel_driver.sh
-       ;;
-       "5" ) ./scripts/nvidia-open_driver.sh ; ./scripts/intel_driver.sh
      esac
      clear
-      esac
+     ;;
+     "5" echo '
+                                Драйвера для гибридной графики
+
+              .─────────────────────────────────────────────────────────────────.
+              .                                                                 .
+              .                                                                 .
+              .     Добро пожаловать в меню установки графических драйверов     .
+              .                                                                 .
+              .  На этом этапе будут установлены драйверы для вашей видеокарты  .
+              .                                                                 .
+              .                                                                 .
+              .                                                                 .
+              .─────────────────────────────────────────────────────────────────.
+
+'
+echo -e "\t
+
+                          -> Для графики Intel + AMD введите               ( 1 )"
+echo -e "\t
+
+                          -> Для графики AMD + NVIDIA DKMS введите         ( 2 )"
+echo -e "\t
+
+                          -> Для AMD + NVIDA OPEN  введите                 ( 3 )"
+echo -e "\t
+
+                          -> Для графики Intel + NVIDIA DKMS введите       ( 4 )"
+echo -e "\t
+
+                          -> Для графики Intel + NVIDA OPEN                ( 5 )"
+
+echo -n "
+
+                          -> Введите значение : "
+read main_menu
+      case "$main_menu" in
+         "1" ) ./scripts/hybrid/intel_amd_hyb.sh
+         ;;
+         "2" ) ./scripts/hybrid/nvidia_amd_hyb.sh
+         ;;
+         "3" ) ./scripts/hybrid/nvidia-open_amd_hyb .sh
+         ;;
+         "4" ) ./scripts/hybrid/intel_nvidia_hyb.sh
+         ;;
+         "5" ) ./scripts/hybrid/intel_nvidia-open_hyb .sh
+clear
+esac
+esac
 clear
 echo '
                                      Микрокод для процессора
