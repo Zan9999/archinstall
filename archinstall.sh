@@ -292,11 +292,11 @@ echo -n "
                           -> Введите значение : "
 read main_menu
       case "$main_menu" in
-         "1" ) ./scripts/intel_driver.sh
+         "1" ) ./scripts/drivers/intel_driver.sh
          ;;
-         "2" ) ./scripts/amd_driver.sh
+         "2" ) ./scripts/drivers/amd_driver.sh
          ;;
-         "3" ) ./script/vbox.sh
+         "3" ) ./scripts/drivers/vbox.sh
          ;;
          "4" )
 clear
@@ -334,11 +334,11 @@ echo -n "
                          -> Введите значение : "
 read main_menu
       case "$main_menu" in
-       "1" ) ./scripts/nvidia/nvidia-dkms_driver.sh
+       "1" ) ./scripts/drivers/nvidia/nvidia-dkms_driver.sh
        ;;
-       "2" ) ./scripts/nvidia/nvidia-nouveau_driver.sh
+       "2" ) ./scripts/drivers/nvidia/nvidia-nouveau_driver.sh
        ;;
-       "3" ) ./scripts/nvidia-open_driver.sh
+       "3" ) ./scripts/drivers/nvidia-open_driver.sh
      esac
      clear
      ;;
@@ -378,15 +378,15 @@ echo -n "
                           -> Введите значение : "
 read main_menu
       case "$main_menu" in
-         "1" ) ./scripts/hybrid/intel_amd_hyb.sh
+         "1" ) ./scripts/drivers/hybrid/intel_amd_hyb.sh
          ;;
-         "2" ) ./scripts/hybrid/nvidia_amd_hyb.sh
+         "2" ) ./scripts/drivers/hybrid/nvidia_amd_hyb.sh
          ;;
-         "3" ) ./scripts/hybrid/nvidia-open_amd_hyb .sh
+         "3" ) ./scripts/drivers/hybrid/nvidia-open_amd_hyb.sh
          ;;
-         "4" ) ./scripts/hybrid/intel_nvidia_hyb.sh
+         "4" ) ./scripts/drivers/hybrid/intel_nvidia_hyb.sh
          ;;
-         "5" ) ./scripts/hybrid/intel_nvidia-open_hyb .sh
+         "5" ) ./scripts/drivers/hybrid/intel_nvidia-open_hyb.sh
 clear
 esac
 esac
@@ -620,7 +620,7 @@ arch-chroot /mnt /bin/bash -c "useradd -m -G wheel,storage,realtime,rfkill -s /b
 arch-chroot /mnt /bin/bash -c "sed -i s/'# %wheel ALL=(ALL:ALL) ALL'/'%wheel ALL=(ALL:ALL) ALL'/g /etc/sudoers"
 echo "$username:$userpassword" | arch-chroot /mnt chpasswd
 echo "root:$password" | arch-chroot /mnt chpasswd
-cp -rf tweaks/profile.d/* /mnt/etc/profile.d/
+cp -rf ./tweaks/general/* /mnt/etc/
 clear
 echo '
 ───────────────────────────────────────────────────────────────────────────────────────────────────────────>
