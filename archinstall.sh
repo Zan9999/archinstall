@@ -338,11 +338,11 @@ read main_menu
        ;;
        "2" ) ./scripts/drivers/nvidia/nvidia-nouveau_driver.sh
        ;;
-       "3" ) ./scripts/drivers/nvidia-open_driver.sh
+       "3" ) ./scripts/drivers/nvidia/nvidia-open_driver.sh
      esac
      clear
      ;;
-     "5" echo '
+   "5" ) echo '
                                 Драйвера для гибридной графики
 
               .─────────────────────────────────────────────────────────────────.
