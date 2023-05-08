@@ -221,7 +221,6 @@ read main_menu
          ;;
          "2" ) clear
       esac
-
 clear
 echo '
                                       Звуковой сервер
@@ -254,7 +253,6 @@ read main_menu
          ;;
          "2" ) ./scripts/pipewire.sh
       esac
-
 clear
 echo '
 ────────────────────────────────────────────────────────────────────────────────────────────|
@@ -262,7 +260,7 @@ echo '
            Пожалуйста подождите , идёт определение драйверов для вашей видеокарты
                                 это займет пару мгновений  .......
 
-─────────────────────────────────────────────────────────────────────────────────────|
+────────────────────────────────────────────────────────────────────────────────────────────|
 '
 ./scripts/install-video-drivers.sh
 clear
@@ -298,7 +296,6 @@ read main_menu
         ;;
          "2" ) arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm amd-ucode"
       esac
-
 clear
 echo '
                                    Графическая оболочка
@@ -393,9 +390,9 @@ echo -n "
                           -> Введите значение : "
 read main_menu
       case "$main_menu" in
-         "1" ) ./DE/gnome.sh ; cp -rf ./tweaks/nautilus/* /home/$username/.local/share/nautilus-python/extensions/
+         "1" ) ./DE/gnome.sh
          ;;
-         "2" ) ./DE/gnome_lite.sh ; cp -rf ./tweaks/nautilus/* /home/$username/.local/share/nautilus-python/extensions/
+         "2" ) ./DE/gnome_lite.sh
          clear
          esac
          ;;
@@ -430,7 +427,7 @@ read main_menu
          clear
          esac
          ;;
-         "4" ) ./DE/xfce.sh
+         "4" ) clear ; ./DE/xfce.sh
          ;;
          "5" ) clear ; ./DE/cinnamon.sh
          ;;
