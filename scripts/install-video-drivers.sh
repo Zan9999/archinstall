@@ -51,3 +51,9 @@ if [ -d /sys/module/i915 ]; then
   cp -rf ../tweaks/intel/modesetting.conf /mnt/etc/X11/xorg.conf.d/
   cp -rf ../tweaks/intel/60-intel-tweaks.conf /mnt/etc/sysctl.d
 fi
+
+# If vbox module available - install vbox driver
+if [ -d /sys/module/vboxguest]; then
+  arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm virtualbox-guest-utils"
+  arch-chroot /mnt /bin/bash -c "systemctl enable vboxservice.service"
+fi
