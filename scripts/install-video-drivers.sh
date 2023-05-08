@@ -22,10 +22,10 @@ nvidia_check_arch
 if [[ -n "$nv_arch" ]]; then
     if [[ $nv_arch == Maxwell || $nv_arch == Pascal || $nv_arch == Volta || $nv_arch == Turing || $nv_arch == Ampere || $nv_arch == Ada_Lovelace ]]; then
         arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings egl-wayland vulkan-icd-loader lib32-vulkan-icd-loader lib32-opencl-nvidia opencl-nvidia libxnvctrl"
-        cp -rf ../tweaks/nvidia/nvidia.conf /mnt/usr/lib/modprobe.d/90-nvidia-tweaks.conf
-        cp -rf ../tweaks/nvidia/nvidia-tweaks.hook /mnt/usr/share/libalpm/hooks/nvidia-tweaks.hook
-        cp -rf ../tweaks/nvidia/nvidia-uvm.conf /mnt/etc/modules-load.d/nvidia-tweaks.conf
-        cp -rf ../tweaks/nvidia/60-nvidia.rules /mnt/usr/lib/udev/rules.d/71-nvidia.rules
+        cp -rf ./tweaks/nvidia/nvidia.conf /mnt/usr/lib/modprobe.d/90-nvidia-tweaks.conf
+        cp -rf ./tweaks/nvidia/nvidia-tweaks.hook /mnt/usr/share/libalpm/hooks/nvidia-tweaks.hook
+        cp -rf ./tweaks/nvidia/nvidia-uvm.conf /mnt/etc/modules-load.d/nvidia-tweaks.conf
+        cp -rf ./tweaks/nvidia/60-nvidia.rules /mnt/usr/lib/udev/rules.d/71-nvidia.rules
     else
         # Install nouveau if pacmanroprietary driver not available
         arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader"
@@ -34,22 +34,22 @@ fi
 # If Nvidia is not available or Detected Hybrid Graphics - check AMD and Intel GPU
 
 # If amdgpu module available - install amdgpu driver
-if [ -d /sys/module/amdgpu || -d /sys/module/radeon ]; then
+if [[ -d /sys/module/amdgpu || -d /sys/module/radeon ]]; then
   arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader"
-  cp -rf ../tweaks/amd/* /mnt/etc/modprobe.d/
+  cp -rf ./tweaks/amd/* /mnt/etc/modprobe.d/
 fi
 
 # If i915(Intel) module available - install Intel GPU driver
 if [ -d /sys/module/i915 ]; then
   arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa vulkan-intel lib32-vulkan-intel vulkan-icd-loader lib32-vulkan-icd-loader"
-  cp -rf ../tweaks/intel/i915.conf /mnt/etc/modprobe.d/
-  cp -rf ../tweaks/intel/20-modesetting.conf /mnt/etc/X11/xorg.conf.d/
-  cp -rf ../tweaks/intel/modesetting.conf /mnt/etc/X11/xorg.conf.d/
-  cp -rf ../tweaks/intel/60-intel-tweaks.conf /mnt/etc/sysctl.d
+  cp -rf ./tweaks/intel/i915.conf /mnt/etc/modprobe.d/
+  cp -rf ./tweaks/intel/20-modesetting.conf /mnt/etc/X11/xorg.conf.d/
+  cp -rf ./tweaks/intel/modesetting.conf /mnt/etc/X11/xorg.conf.d/
+  cp -rf ./tweaks/intel/60-intel-tweaks.conf /mnt/etc/sysctl.d
 fi
 
 # If vbox module available - install vbox driver
-if [ -d /sys/module/vboxguest]; then
+if [ -d /sys/module/vboxguest ]; then
   arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm virtualbox-guest-utils"
   arch-chroot /mnt /bin/bash -c "systemctl enable vboxservice.service"
 fi
