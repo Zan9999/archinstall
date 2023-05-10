@@ -35,13 +35,13 @@ fi
 
 # If amdgpu module available - install amdgpu driver
 if [[ -d /sys/module/amdgpu || -d /sys/module/radeon ]]; then
-  arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader"
+  arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader libva-mesa-driver mesa-vdpau"
   cp -rf ./tweaks/amd/* /mnt/etc/modprobe.d/
 fi
 
 # If i915(Intel) module available - install Intel GPU driver
 if [ -d /sys/module/i915 ]; then
-  arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa vulkan-intel lib32-vulkan-intel vulkan-icd-loader lib32-vulkan-icd-loader"
+  arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa vulkan-intel lib32-vulkan-intel vulkan-icd-loader lib32-vulkan-icd-loader intel-media-driver libva-intel-driver"
   cp -rf ./tweaks/intel/i915.conf /mnt/etc/modprobe.d/
   cp -rf ./tweaks/intel/20-modesetting.conf /mnt/etc/X11/xorg.conf.d/
   cp -rf ./tweaks/intel/modesetting.conf /mnt/etc/X11/xorg.conf.d/
