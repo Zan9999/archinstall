@@ -21,5 +21,5 @@ if lspci -k | grep -q nvidia; then
 	export LIBVA_DRIVER_NAME=nvidia
 	export VDPAU_DRIVER=vdpau
  else
-		export DRI_PRIME=1
+ 	export DRI_PRIME=1
 fi
