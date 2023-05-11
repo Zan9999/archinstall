@@ -27,7 +27,7 @@ if [[ -n "$nv_arch" ]]; then
         cp -rf ./tweaks/nvidia/nvidia-uvm.conf /mnt/etc/modules-load.d/nvidia-tweaks.conf
         cp -rf ./tweaks/nvidia/60-nvidia.rules /mnt/usr/lib/udev/rules.d/71-nvidia.rules
     else
-        # Install nouveau if pacman proprietary driver not available
+        # Install nouveau if Nvidia proprietary driver not available
         arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader mesa-utils mesa-utils inxi"
     fi
 fi
