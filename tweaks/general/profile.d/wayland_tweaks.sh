@@ -4,6 +4,7 @@ if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
 		export GBM_BACKEND=nvidia-drm
 		export __GLX_VENDOR_LIBRARY_NAME=nvidia
 		export EGL_PLATFORM=wayland
+		export QSG_RENDER_LOOP='basic'
 	fi
 if [[ $DESKTOP_SESSION == "gnome" ]]; then
     export XCURSOR_THEME=breeze
