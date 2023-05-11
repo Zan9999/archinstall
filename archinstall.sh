@@ -186,41 +186,20 @@ echo '
 ─────────────────────────────────────────────────────────────────────────────────────|
 '
 sleep 2
+#----------------------------PACMAN Settings----------------------------------------------------------------------
 arch-chroot /mnt /bin/bash -c "sed -i s/'#ParallelDownloads = 5'/'ParallelDownloads = 5'/g /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i s/'#VerbosePkgLists'/'VerbosePkgLists'/g /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i s/'#Color'/'Color\nILoveCandy'/g /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i s/'CheckSpace'/'#CheckSpace'/g /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i '/\[multilib\]/,/Include/''s/^#//' /etc/pacman.conf"
-arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm bluez-utils bluez grub efibootmgr firefox firefox-i18n-ru networkmanager bash-completion ntfs-3g os-prober xdg-user-dirs xdg-utils realtime-privileges xclip lrzip zip unrar unzip unace p7zip squashfs-tools hunspell qt6-svg gstreamer gst-plugins-bad gst-plugin-pipewire gst-plugins-base gst-plugins-good hunspell-en_us hunspell-ru xorg xorg-server xorg-xinit"
-clear
-echo '
-                                      Chaotic-AUR
-
-              .─────────────────────────────────────────────────────────────────────.
-              .                                                                     .
-              .                                                                     .
-              .               Подключить репозиторий Chaotic-AUR ?                  .
-              .                                                                     .
-              .                                                                     .
-              .─────────────────────────────────────────────────────────────────────.
-
-'
-echo -e "\t
-
-                          -> Да     ( 1 )"
-echo -e "\t
-
-
-                          -> Нет   ( 2 )"
-echo -n "
-
-                          -> Введите значение : "
-read main_menu
-      case "$main_menu" in
-         "1" ) ./scripts/chaotic-aur.sh
-         ;;
-         "2" ) clear
-      esac
+#----------------------------Chaotic AUR----------------------------------------------------------------------
+arch-chroot /mnt /bin/bash -c "pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com"
+arch-chroot /mnt /bin/bash -c "pacman-key --lsign-key FBA220DFC880C036"
+arch-chroot /mnt /bin/bash -c "pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'"
+arch-chroot /mnt /bin/bash -c "echo -e '\n[chaotic-aur]' >> /etc/pacman.conf"
+arch-chroot /mnt /bin/bash -c "echo 'Include = /etc/pacman.d/chaotic-mirrorlist' >> /etc/pacman.conf"
+#----------------------------Base Packages----------------------------------------------------------------------
+arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm bluez-utils bluez grub efibootmgr firefox firefox-i18n-ru networkmanager bash-completion ntfs-3g os-prober xdg-user-dirs xdg-utils realtime-privileges xclip lrzip zip unrar unzip unace p7zip squashfs-tools hunspell gstreamer gst-plugins-bad gst-plugin-pipewire gst-plugins-base gst-plugins-good hunspell-en_us hunspell-ru xorg xorg-server xorg-xinit"
 clear
 echo '
                                       Звуковой сервер
