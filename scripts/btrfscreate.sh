@@ -58,7 +58,8 @@ read -p "
 
 clear
 mkswap /dev/$swap 
-swapon /dev/$swap 
+swapon /dev/$swap
+export $swap
 clear
 
 echo '

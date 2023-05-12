@@ -199,7 +199,7 @@ arch-chroot /mnt /bin/bash -c "pacman -U --noconfirm 'https://cdn-mirror.chaotic
 arch-chroot /mnt /bin/bash -c "echo -e '\n[chaotic-aur]' >> /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "echo 'Include = /etc/pacman.d/chaotic-mirrorlist' >> /etc/pacman.conf"
 #----------------------------Base Packages----------------------------------------------------------------------
-arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm bluez-utils bluez grub efibootmgr firefox firefox-i18n-ru networkmanager bash-completion ntfs-3g os-prober xdg-user-dirs xdg-utils xclip lrzip zip unrar unzip unace p7zip squashfs-tools hunspell gstreamer gst-plugins-bad gst-plugin-pipewire gst-plugins-base gst-plugins-good hunspell-en_us hunspell-ru xorg xorg-server xorg-xinit ananicy-cpp ananicy-rules rng-tools dbus-broker irqbalance kvantum qt6-svg"
+arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm bluez-utils bluez grub efibootmgr firefox firefox-i18n-ru networkmanager bash-completion ntfs-3g os-prober xdg-user-dirs xdg-utils xclip lrzip zip unrar unzip unace p7zip squashfs-tools hunspell gstreamer gst-plugins-bad gst-plugin-pipewire gst-plugins-base gst-plugins-good hunspell-en_us hunspell-ru xorg xorg-server xorg-xinit ananicy-cpp ananicy-rules rng-tools dbus-broker irqbalance kvantum qt6-svg nohang"
 clear
 echo '
                                       Звуковой сервер
@@ -237,7 +237,7 @@ echo '
 ──────────────────────────────────────────────────────────────────────────────────────────────────|
 
  Пожалуйста подождите , идёт определение драйверов для вашей видеокарты и микрокода для процессора
- 
+
                                 это займет пару мгновений  .......
 
 ──────────────────────────────────────────────────────────────────────────────────────────────────|
@@ -429,15 +429,16 @@ arch-chroot /mnt /bin/bash -c "echo '127.0.0.1 localhost' >> /etc/hosts"
 arch-chroot /mnt /bin/bash -c "echo '::1       localhost' >> /etc/hosts"
 arch-chroot /mnt /bin/bash -c "echo '127.0.1.1 $hostname.localdomain $hostname' >> /etc/hosts"
 #----------------------------Services----------------------------------------------------------------------
-arch-chroot /mnt /bin/bash -c "systemctl enable NetworkManager bluetooth irqbalance dbus-broker.service rngd ananicy-cpp"
+arch-chroot /mnt /bin/bash -c "systemctl enable NetworkManager bluetooth irqbalance dbus-broker.service rngd ananicy-cpp nohang-desktop "
 arch-chroot /mnt /bin/bash -c "systemctl --global enable dbus-broker.service"
 #----------------------------GRUB----------------------------------------------------------------------
 arch-chroot /mnt /bin/bash -c "grub-install /dev/$disk"
-arch-chroot /mnt /bin/bash -c "sed -i s/'GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=3 quiet\"'/'GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=3 quiet splash raid=noautodetect mitigations=off preempt=none nowatchdog audit=0 selinux=0 split_lock_detect=off pci=pcie_bus_perf zswap.enabled=0 ibt=off\"'/g /etc/default/grub"
+arch-chroot /mnt /bin/bash -c "sed -i s/'GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=3 quiet\"'/'GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=3 quiet splash raid=noautodetect mitigations=off preempt=none nowatchdog audit=0 selinux=0 split_lock_detect=off pci=pcie_bus_perf zswap.enabled=0 ibt=off libahci.ignore_sss=1 resume=$swap\"'/g /etc/default/grub"
 arch-chroot /mnt /bin/bash -c "sed -i s/'#GRUB_DISABLE_OS_PROBER=false'/'GRUB_DISABLE_OS_PROBER=false'/g /etc/default/grub"
 arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
 #----------------------------initcpio----------------------------------------------------------------------
 arch-chroot /mnt /bin/bash -c "sed -i s/'BINARIES=()'/'BINARIES=(setfont)'/g /etc/mkinitcpio.conf"
+arch-chroot /mnt /bin/bash -c "sed -i s/'HOOKS=(base udev autodetect modconf kms keyboard keymap consolefont block filesystems fsck)'/'HOOKS=(base systemd autodetect modconf kms keyboard sd-vconsole block filesystems)'/g /etc/mkinitcpio.conf"
 arch-chroot /mnt /bin/bash -c "mkinitcpio -P"
 #----------------------------Accounts----------------------------------------------------------------------
 arch-chroot /mnt /bin/bash -c "useradd -m -G wheel,storage,rfkill -s /bin/bash $username"
