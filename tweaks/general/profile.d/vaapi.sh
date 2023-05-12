@@ -20,6 +20,9 @@ fi
 if lspci -k | grep -q nvidia; then
 	export LIBVA_DRIVER_NAME=nvidia
 	export VDPAU_DRIVER=vdpau
+	export LIBVA_DRIVER_NAME=nvidia
+	export MOZ_DISABLE_RDD_SANDBOX=1
+	export NVD_BACKEND=direct
  else
  	export DRI_PRIME=1
 fi
