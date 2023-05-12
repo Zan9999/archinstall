@@ -50,6 +50,16 @@ fi
 
 # If vbox module available - install vbox driver
 if [ -d /sys/module/vboxguest ]; then
-  arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm virtualbox-guest-utils"
+  arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa virtualbox-guest-utils mesa-demos mesa-utils inxi"
   arch-chroot /mnt /bin/bash -c "systemctl enable vboxservice.service"
+fi
+
+# If vmware module available - install vmware driver
+if [ -d /sys/modules/vmwgfx ]; then
+  arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa mesa-demos mesa-utils inxi xf86-input-vmmouse xf86-video-vmware"
+fi
+
+# If qemu module available - install qemu driver
+if [ -d /sys/modules/virtio_gpu ]; then
+  arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa mesa-demos mesa-utils inxi qemu-guest-agent"
 fi
