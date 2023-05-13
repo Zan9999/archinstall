@@ -11,10 +11,5 @@ fi
 # Check Intel i915 module
 if [ -d /sys/module/i915 ]; then
 	export ANV_GPL=true # Enable Graphics Pipeline Library support on Intel ANV vulkan driver
-	export __GL_THREADED_OPTIMIZATIONS=1
-	export __GL_MaxFramesAllowed=3
-	export __GL_YIELD="NOTHING"
-	export MESA_GL_VERSION_OVERRIDE=4.5
-	export MESA_GLSL_VERSION_OVERRIDE=450
 	export COGL_ATLAS_DEFAULT_BLIT_MODE=framebuffer 
 fi
