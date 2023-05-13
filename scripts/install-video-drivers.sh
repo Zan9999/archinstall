@@ -55,11 +55,22 @@ if [ -d /sys/module/vboxguest ]; then
 fi
 
 # If vmware module available - install vmware driver
-if [ -d /sys/modules/vmwgfx ]; then
+if [ -d /sys/module/vmwgfx ]; then
   arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa mesa-demos mesa-utils inxi xf86-input-vmmouse xf86-video-vmware"
 fi
 
 # If qemu module available - install qemu driver
-if [ -d /sys/modules/virtio_gpu ]; then
-  arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa mesa-demos mesa-utils inxi qemu-guest-agent"
+if [ -d /sys/module/virtio_gpu ]; then
+  arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesamesa lib32-mesa mesa-demos mesa-utils inxi qemu-guest-agent"
+fi
+
+# Install ucode
+
+cpu_model_name=$(cat /proc/cpuinfo | grep vendor | cut -c 13-24 | uniq)
+
+if [[ $cpu_model_name = "GenuineIntel" ]]; then
+    arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm intel-ucode"
+fi
+if [[ $cpu_model_name = "AuthenticAMD" ]]; then
+    arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm amd-ucode"
 fi
