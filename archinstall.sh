@@ -25,6 +25,12 @@ echo '
                   (Для автоматической разметки диска в папке scripts есть btrfscreate)
               ───────────────────────────────────────────────────────────────────────────
 '
+# Keys Fix
+pacman -Sy archlinux-keyring --noconfirm
+rm /var/lib/pacman/sync/*
+rm -rf /etc/pacman.d/gnupg/*
+pacman-key --init
+pacman-key --populate
 sleep 2
 clear
 echo '
@@ -199,7 +205,7 @@ arch-chroot /mnt /bin/bash -c "pacman -U --noconfirm 'https://cdn-mirror.chaotic
 arch-chroot /mnt /bin/bash -c "echo -e '\n[chaotic-aur]' >> /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "echo 'Include = /etc/pacman.d/chaotic-mirrorlist' >> /etc/pacman.conf"
 #----------------------------Base Packages----------------------------------------------------------------------
-arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm bluez-utils bluez grub efibootmgr firefox firefox-i18n-ru networkmanager bash-completion ntfs-3g os-prober xdg-user-dirs xdg-utils xclip lrzip zip unrar unzip unace p7zip squashfs-tools hunspell gstreamer gst-plugins-bad gst-plugin-pipewire gst-plugins-base gst-plugins-good hunspell-en_us hunspell-ru xorg xorg-server xorg-xinit ananicy-cpp ananicy-rules rng-tools dbus-broker irqbalance kvantum qt6-svg nohang mkinitcpio-firmware"
+arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm bluez-utils bluez grub efibootmgr firefox firefox-i18n-ru networkmanager bash-completion ntfs-3g os-prober xdg-user-dirs xdg-utils xclip lrzip zip unrar unzip unace p7zip squashfs-tools hunspell gstreamer gst-plugins-bad gst-plugin-pipewire gst-plugins-base gst-plugins-good hunspell-en_us hunspell-ru xorg xorg-server xorg-xinit rng-tools dbus-broker irqbalance kvantum qt6-svg"
 clear
 echo '
                                       Звуковой сервер
@@ -428,7 +434,7 @@ arch-chroot /mnt /bin/bash -c "echo '127.0.0.1 localhost' >> /etc/hosts"
 arch-chroot /mnt /bin/bash -c "echo '::1       localhost' >> /etc/hosts"
 arch-chroot /mnt /bin/bash -c "echo '127.0.1.1 $hostname.localdomain $hostname' >> /etc/hosts"
 #----------------------------Services----------------------------------------------------------------------
-arch-chroot /mnt /bin/bash -c "systemctl enable NetworkManager bluetooth irqbalance dbus-broker.service rngd ananicy-cpp nohang-desktop "
+arch-chroot /mnt /bin/bash -c "systemctl enable NetworkManager bluetooth irqbalance dbus-broker.service rngd"
 arch-chroot /mnt /bin/bash -c "systemctl --global enable dbus-broker.service"
 #----------------------------GRUB----------------------------------------------------------------------
 arch-chroot /mnt /bin/bash -c "grub-install /dev/$disk"
