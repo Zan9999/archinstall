@@ -1,0 +1,33 @@
+#!/bin/bash
+
+#
+#  Arch Linux Install (Arch Install) Downloader
+#------------------------------------------|
+#           :
+# Author    : Barry
+#           :
+#           :
+# License   : LGPL-3.0 (http://opensource.org/licenses/lgpl-3.0.html)
+#           :
+#----------------------------------------------------------------------|
+setfont cyr-sun16
+sleep 2
+clear
+#Fix Keys
+pacman -Sy archlinux-keyring --noconfirm
+rm /var/lib/pacman/sync/*
+rm -rf /etc/pacman.d/gnupg/*
+pacman-key --init
+pacman-key --populate
+pacman -Sy git --noconfirm
+git clone https://github.com/boria138/archinstall
+clear
+echo '
+                 ────────────────────────────────────────────────────────────────
+                     Внимание !  скрипт НЕ создает разделы на диске , разделы вы
+                 создаёте сами , поэтому если вы еще не создали разделы - создайте их
+           (Для автоматической разметки диска в папке archinstall/scripts есть btrfscreate)
+              ───────────────────────────────────────────────────────────────────────────
+'
+sleep 3
+clear
