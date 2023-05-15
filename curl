@@ -14,11 +14,10 @@ setfont cyr-sun16
 sleep 2
 clear
 #Fix Keys
-killall gpg-agent
 gpg --refresh-keys
+pacman -Sy archlinux-keyring --noconfirm
 pacman-key --init
-pacman-key --populate archlinux
-pacman -Sy archlinux-keyring
+pacman-key --populate
 pacman -Sy git --noconfirm
 git clone https://github.com/boria138/archinstall
 clear
