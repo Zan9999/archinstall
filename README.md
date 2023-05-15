@@ -4,11 +4,13 @@
 
 - Created scripts for installation DE and drivers
 - Cut out the disk layout (Done via btrfscreate in settigs folder)
-- Add mkinitcpio settings
-- Add GRUB settings
-- Add drivers autoinstall
-- Add CPU ucode autoinstall
-- Add my [arch based distro tweaks](https://github.com/Boria138/arch-tweaks) autoinstall
+- Added mkinitcpio settings
+- Added GRUB settings
+- Added drivers autoinstall
+- Added CPU ucode autoinstall
+- Added my [arch based distro tweaks](https://github.com/Boria138/arch-tweaks) autoinstall
+- Added plymouth autoinstall
+- Added chaotic-aur repository by default
 
 > Note: files not related to Arch Install have been moved to the [dotfiles repository](https://github.com/Boria138/dotfiles/)
 
