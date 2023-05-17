@@ -422,8 +422,12 @@ arch-chroot /mnt /bin/bash -c "echo $hostname >> /etc/hostname"
 arch-chroot /mnt /bin/bash -c "echo '127.0.0.1 localhost' >> /etc/hosts"
 arch-chroot /mnt /bin/bash -c "echo '::1       localhost' >> /etc/hosts"
 arch-chroot /mnt /bin/bash -c "echo '127.0.1.1 $hostname.localdomain $hostname' >> /etc/hosts"
+#----------------------------Tweaks----------------------------------------------------------------------
+cp -rf ./tweaks/general/* /mnt/etc/
+cp -rf ./tweaks/services/systemd /mnt/etc/
+cp -rf ./tweaks/services/usr/bin/* /mnt/usr/bin/
 #----------------------------Services----------------------------------------------------------------------
-arch-chroot /mnt /bin/bash -c "systemctl enable NetworkManager bluetooth irqbalance dbus-broker.service ananicy-cpp systemd-oomd uresourced memavaild prelockd"
+arch-chroot /mnt /bin/bash -c "systemctl enable NetworkManager bluetooth irqbalance dbus-broker.service ananicy-cpp systemd-oomd uresourced memavaild prelockd dirty_ratio"
 arch-chroot /mnt /bin/bash -c "systemctl --global enable dbus-broker.service"
 arch-chroot /mnt /bin/bash -c "systemctl mask plymouth-quit-wait.service"
 #----------------------------GRUB----------------------------------------------------------------------
@@ -440,7 +444,6 @@ arch-chroot /mnt /bin/bash -c "useradd -m -G wheel,storage,rfkill,realtime,video
 arch-chroot /mnt /bin/bash -c "sed -i s/'# %wheel ALL=(ALL:ALL) ALL'/'%wheel ALL=(ALL:ALL) ALL'/g /etc/sudoers"
 echo "$username:$userpassword" | arch-chroot /mnt chpasswd
 echo "root:$password" | arch-chroot /mnt chpasswd
-cp -rf ./tweaks/general/* /mnt/etc/
 clear
 echo '
 ───────────────────────────────────────────────────────────────────────────────────────────────────────────>

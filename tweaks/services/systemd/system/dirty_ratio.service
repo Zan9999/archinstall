@@ -1,0 +1,11 @@
+# By Boria138
+
+[Unit]
+Description=A service to set the value of vm.dirty_ratio on system startup
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/dirty_ratio.sh
+
+[Install]
+WantedBy=multi-user.target
