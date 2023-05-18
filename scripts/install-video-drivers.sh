@@ -21,21 +21,27 @@ nvidia_check_arch
 # Check for Nvidia GPU available
 if [[ -n "$nv_arch" ]]; then
     if [[ $nv_arch == Maxwell || $nv_arch == Pascal || $nv_arch == Volta || $nv_arch == Turing || $nv_arch == Ampere || $nv_arch == Ada_Lovelace ]]; then
-        arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings egl-wayland vulkan-icd-loader lib32-vulkan-icd-loader lib32-opencl-nvidia opencl-nvidia libxnvctrl ffnvcodec-headers nvidia-vaapi-driver-git libva-utils inxi"
+        arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings egl-wayland vulkan-icd-loader lib32-vulkan-icd-loader lib32-opencl-nvidia opencl-nvidia libxnvctrl ffnvcodec-headers nvidia-vaapi-driver-git libva-utils inxi mesa-utuls"
         cp -rf ./tweaks/nvidia/nvidia.conf /mnt/usr/lib/modprobe.d/90-nvidia-tweaks.conf
         cp -rf ./tweaks/nvidia/nvidia-tweaks.hook /mnt/usr/share/libalpm/hooks/nvidia-tweaks.hook
         cp -rf ./tweaks/nvidia/nvidia-uvm.conf /mnt/etc/modules-load.d/nvidia-tweaks.conf
         cp -rf ./tweaks/nvidia/60-nvidia.rules /mnt/usr/lib/udev/rules.d/71-nvidia.rules
     else
         # Install nouveau if Nvidia proprietary driver not available
-        arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader mesa-utils inxi"
+        arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa libva-mesa-driver mesa-vdpau mesa-utils libva-utils inxi nouveau-fw"
     fi
 fi
 # If Nvidia is not available or Detected Hybrid Graphics - check AMD and Intel GPU
 
 # If amdgpu module available - install amdgpu driver
-if [[ -d /sys/module/amdgpu || -d /sys/module/radeon ]]; then
+if [ -d /sys/module/amdgpu ]; then
   arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader libva-mesa-driver mesa-vdpau mesa-utils libva-utils inxi"
+  cp -rf ./tweaks/amd/* /mnt/etc/modprobe.d/
+fi
+
+# If radeon module available - install radeon driver
+if [ -d /sys/module/radeon ]; then
+  arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa libva-mesa-driver mesa-vdpau mesa-utils libva-utils inxi"
   cp -rf ./tweaks/amd/* /mnt/etc/modprobe.d/
 fi
 
@@ -61,13 +67,13 @@ if [ -d /sys/module/virtio_gpu ]; then
   arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa mesa-utils inxi qemu-guest-agent"
 fi
 
-# Install ucode
 
+# Install ucode
 cpu_model_name=$(cat /proc/cpuinfo | grep vendor | cut -c 13-24 | uniq)
 
 if [[ $cpu_model_name = "GenuineIntel" ]]; then
-    arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm intel-ucode"
+  arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm intel-ucode"
 fi
 if [[ $cpu_model_name = "AuthenticAMD" ]]; then
-    arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm amd-ucode"
+  arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm amd-ucode"
 fi
