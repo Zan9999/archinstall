@@ -194,7 +194,7 @@ arch-chroot /mnt /bin/bash -c "pacman -U --noconfirm 'https://cdn-mirror.chaotic
 arch-chroot /mnt /bin/bash -c "echo -e '\n[chaotic-aur]' >> /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "echo 'Include = /etc/pacman.d/chaotic-mirrorlist' >> /etc/pacman.conf"
 #----------------------------Base Packages----------------------------------------------------------------------
-arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm bluez-utils bluez grub efibootmgr firefox firefox-i18n-ru networkmanager bash-completion ntfs-3g os-prober xdg-user-dirs xdg-utils xclip wl-clipboard lrzip zip unrar unzip unace p7zip squashfs-tools hunspell gstreamer gst-plugins-bad gst-plugin-pipewire gst-plugins-base gst-plugins-good gst-libav ffmpegthumbnailer hunspell-en_us hunspell-ru xorg xorg-server xorg-xinit realtime-privileges dbus-broker irqbalance ananicy-cpp ananicy-rules memavaild uresourced plymouth prelockd"
+arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm bluez-utils bluez grub efibootmgr firefox firefox-i18n-ru networkmanager bash-completion ntfs-3g os-prober xdg-user-dirs xdg-utils xclip wl-clipboard lrzip zip unrar unzip unace p7zip squashfs-tools hunspell gstreamer gst-plugins-bad gst-plugin-pipewire gst-plugins-base gst-plugins-good gst-libav ffmpegthumbnailer hunspell-en_us hunspell-ru xorg xorg-server xorg-xinit realtime-privileges dbus-broker irqbalance ananicy-cpp ananicy-rules memavaild uresourced plymouth prelockd yay cantarell-fonts"
 clear
 echo '
                                       Звуковой сервер
