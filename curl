@@ -15,6 +15,7 @@ sleep 2
 clear
 #Fix Keys
 gpg --refresh-keys
+rm /var/lib/pacman/sync/*
 cp -f "/etc/pacman.conf" "/etc/pacman.conf.orig"
 sed -i 's/SigLevel.*/SigLevel = Never/' /etc/pacman.conf
 pacman -Sy gnupg archlinux-keyring --noconfirm
