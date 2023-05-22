@@ -424,7 +424,6 @@ arch-chroot /mnt /bin/bash -c "echo '::1       localhost' >> /etc/hosts"
 arch-chroot /mnt /bin/bash -c "echo '127.0.1.1 $hostname.localdomain $hostname' >> /etc/hosts"
 #----------------------------Tweaks----------------------------------------------------------------------
 cp -rf ./tweaks/general/* /mnt/etc/
-cp -rf ./tweaks/systemd /mnt/etc/
 cp -rf ./tweaks/usr/bin/* /mnt/usr/bin/
 #----------------------------Services----------------------------------------------------------------------
 arch-chroot /mnt /bin/bash -c "systemctl enable NetworkManager bluetooth irqbalance dbus-broker.service ananicy-cpp systemd-oomd uresourced memavaild prelockd kernel-tweaks.timer pci-latency.service"
