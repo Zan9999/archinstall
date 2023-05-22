@@ -17,8 +17,11 @@ sysctl -w vm.dirty_background_ratio="$background_ratio"
 if [[ $(swapon --show) ]]; then
   # A swap file or partition exists, set vm.swappiness to 100
   sysctl -w vm.swappiness=100
-  echo "vm.swappiness is set to 100"
-else
-  # No swap file or partition found
-  echo "No swap file or partition found. Skipping setting vm.swappiness."
 fi
+
+# Iterate over the block devices and check if they are zram devices
+for device in /sys/block/zram*; do
+    if [[ -d "$device" ]]; then
+      sysctl -w vm.page-cluster=0
+    fi
+done
