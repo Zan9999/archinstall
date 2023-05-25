@@ -415,17 +415,25 @@ clear
 arch-chroot /mnt /bin/bash -c "ln -sf /usr/share/zoneinfo/$region /etc/localtime"
 arch-chroot /mnt /bin/bash -c "hwclock --systohc"
 #----------------------------Locale----------------------------------------------------------------------
-arch-chroot /mnt /bin/bash -c "sed -i s/'#en_US.UTF-8'/'en_US.UTF-8'/g /etc/locale.gen"
-arch-chroot /mnt /bin/bash -c "sed -i s/'#ru_RU.UTF-8'/'ru_RU.UTF-8'/g /etc/locale.gen"
-arch-chroot /mnt /bin/bash -c "locale-gen"
-arch-chroot /mnt /bin/bash -c "echo 'LANG=ru_RU.UTF-8' > /etc/locale.conf"
-arch-chroot /mnt /bin/bash -c "echo 'KEYMAP=ru' >> /etc/vconsole.conf"
-arch-chroot /mnt /bin/bash -c "echo 'FONT=cyr-sun16' >> /etc/vconsole.conf"
+if grep "LANG=ru_RU.UTF-8" /mnt/etc/locale.conf; then
+  echo "Локаль уже настроенна!"
+else
+  arch-chroot /mnt /bin/bash -c "sed -i s/'#en_US.UTF-8'/'en_US.UTF-8'/g /etc/locale.gen"
+  arch-chroot /mnt /bin/bash -c "sed -i s/'#ru_RU.UTF-8'/'ru_RU.UTF-8'/g /etc/locale.gen"
+  arch-chroot /mnt /bin/bash -c "locale-gen"
+  arch-chroot /mnt /bin/bash -c "echo 'LANG=ru_RU.UTF-8' > /etc/locale.conf"
+  arch-chroot /mnt /bin/bash -c "echo 'KEYMAP=ru' >> /etc/vconsole.conf"
+  arch-chroot /mnt /bin/bash -c "echo 'FONT=cyr-sun16' >> /etc/vconsole.conf"
+fi
 #----------------------------Network----------------------------------------------------------------------
-arch-chroot /mnt /bin/bash -c "echo $hostname >> /etc/hostname"
-arch-chroot /mnt /bin/bash -c "echo '127.0.0.1 localhost' >> /etc/hosts"
-arch-chroot /mnt /bin/bash -c "echo '::1       localhost' >> /etc/hosts"
-arch-chroot /mnt /bin/bash -c "echo '127.0.1.1 $hostname.localdomain $hostname' >> /etc/hosts"
+if grep "$hostname" /mnt/etc/hostname; then
+  echo "Сеть уже настроенна!"
+else
+  arch-chroot /mnt /bin/bash -c "echo $hostname >> /etc/hostname"
+  arch-chroot /mnt /bin/bash -c "echo '127.0.0.1 localhost' >> /etc/hosts"
+  arch-chroot /mnt /bin/bash -c "echo '::1       localhost' >> /etc/hosts"
+  arch-chroot /mnt /bin/bash -c "echo '127.0.1.1 $hostname.localdomain $hostname' >> /etc/hosts"
+fi
 #----------------------------Tweaks----------------------------------------------------------------------
 cp -rf ./tweaks/general/* /mnt/etc/
 cp -rf ./tweaks/usr/bin/* /mnt/usr/bin/
