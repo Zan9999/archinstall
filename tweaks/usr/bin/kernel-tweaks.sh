@@ -3,15 +3,13 @@
 # Get the available memory in gigabytes
 available_mem=$(free -g | awk '/Mem/ {print $7}')
 
-# Calculate the dirty_ratio based on available memory (set to 50% of available memory)
-dirty_ratio=$((available_mem / 2))
-
-# Calculate the background_ratio based on available memory (set to 25% of available memory)
-background_ratio=$((available_mem / 4))
-
-# Update the dirty_ratio and background_ratio values
-sysctl -w vm.dirty_ratio="$dirty_ratio"
-sysctl -w vm.dirty_background_ratio="$background_ratio"
+if [ $available_mem -le 5 ]; then
+    sysctl -w vm.dirty_ratio=10
+    sysctl -w vm.dirty_background_ratio=5
+elif [ $available_mem -le 13 ]; then
+    sysctl -w vm.dirty_ratio=4
+    sysctl -w vm.dirty_background_ratio=2
+fi
 
 # Check if a swap file or partition exists
 if [[ $(swapon --show) ]]; then
