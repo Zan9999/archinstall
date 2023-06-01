@@ -18,6 +18,8 @@ nvidia_check_arch(){
 
 nvidia_check_arch
 
+result=$(systemd-detect-virt)
+
 # Check for Nvidia GPU available
 if [[ -n "$nv_arch" ]]; then
     if [[ $nv_arch == Maxwell || $nv_arch == Pascal || $nv_arch == Volta || $nv_arch == Turing || $nv_arch == Ampere || $nv_arch == Ada_Lovelace ]]; then
@@ -35,7 +37,7 @@ fi
 
 # If amdgpu module available - install amdgpu driver
 if [ -d /sys/module/amdgpu ]; then
-  arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader libva-mesa-driver mesa-vdpau mesa-utils libva-utils inxi"
+  arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader mesa-vdpau lib32-mesa-vdpau libva-mesa-driver lib32-libva-mesa-driver vulkan-mesa-layers lib32-vulkan-mesa-layers xf86-video-amdgpu amd-vulkan-prefixes libva-utils mesa-utils inxi"
   cp -rf ./tweaks/amd/* /mnt/etc/modprobe.d/
 fi
 
@@ -47,23 +49,23 @@ fi
 
 # If i915(Intel) module available - install Intel GPU driver
 if [ -d /sys/module/i915 ]; then
-  arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa vulkan-intel lib32-vulkan-intel vulkan-icd-loader lib32-vulkan-icd-loader intel-media-driver libva-intel-driver libvdpau-va-gl mesa-utils libva-utils inxi"
+  arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa vulkan-intel lib32-vulkan-intel vulkan-icd-loader lib32-vulkan-icd-loader libvdpau-va-gl vulkan-mesa-layers lib32-vulkan-mesa-layers mesa-utils libva-intel-driver inxi"
   cp -rf ./tweaks/intel/i915.conf /mnt/etc/modprobe.d/
 fi
 
 # If vbox module available - install vbox driver
-if [ -d /sys/module/vboxguest ]; then
+if [ $result = "oracle" ]; then
   arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa virtualbox-guest-utils mesa-utils inxi"
   arch-chroot /mnt /bin/bash -c "systemctl enable vboxservice.service"
 fi
 
 # If vmware module available - install vmware driver
-if [ -d /sys/module/vmwgfx ]; then
+if [ $result = "vmware" ]; then
   arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa mesa-utils inxi xf86-input-vmmouse xf86-video-vmware"
 fi
 
 # If qemu module available - install qemu driver
-if [ -d /sys/module/virtio_gpu ]; then
+if [ $result = "kvm" ]; then
   arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa mesa-utils inxi qemu-guest-agent"
 fi
 
