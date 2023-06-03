@@ -12,6 +12,11 @@
 #           :
 #----------------------------------------------------------------------|
 setfont cyr-sun16
+pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com
+pacman-key --lsign-key FBA220DFC880C036
+pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
+echo -e '\n[chaotic-aur]' >> /etc/pacman.conf
+echo 'Include = /etc/pacman.d/chaotic-mirrorlist' >> /etc/pacman.conf
 clear
 echo '
                ─▄▀─▄▀
@@ -154,11 +159,11 @@ echo -n "
 read main_menu
       case "$main_menu" in
 
-         "1" ) clear ; pacstrap /mnt base reflector rsync base-devel linux linux-headers linux-firmware dosfstools mtools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
+         "1" ) clear ; pacstrap /mnt base rate-mirrors rsync base-devel linux linux-headers linux-firmware dosfstools mtools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
          ;;
-         "2" ) clear ; pacstrap /mnt base reflector rsync base-devel linux-zen linux-zen-headers linux-firmware dosfstools mtools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
+         "2" ) clear ; pacstrap /mnt base rate-mirrors rsync base-devel linux-zen linux-zen-headers linux-firmware dosfstools mtools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
          ;;
-         "3" ) clear ; pacstrap /mnt base reflector rsync base-devel linux-lts linux-lts-headers linux-firmware dosfstools mtools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
+         "3" ) clear ; pacstrap /mnt base rate-mirrors rsync base-devel linux-lts linux-lts-headers linux-firmware dosfstools mtools btrfs-progs iucode-tool archlinux-keyring micro git --noconfirm
       esac
 
 clear
@@ -197,9 +202,10 @@ else
   arch-chroot /mnt /bin/bash -c "echo -e '\n[chaotic-aur]' >> /etc/pacman.conf"
   arch-chroot /mnt /bin/bash -c "echo 'Include = /etc/pacman.d/chaotic-mirrorlist' >> /etc/pacman.conf"
 fi
-arch-chroot /mnt /bin/bash -c "reflector --latest 20 --sort rate --save /etc/pacman.d/mirrorlist"
+arch-chroot /mnt /bin/bash -c "rate-mirrors --allow-root arch | tee /etc/pacman.d/mirrorlist"
+arch-chroot /mnt /bin/bash -c "rate-mirrors --allow-root chaotic-aur | tee /etc/pacman.d/chaotic-mirrorlist"
 #----------------------------Base Packages----------------------------------------------------------------------
-arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm bluez-utils bluez pipewire-jack grub efibootmgr firefox firefox-i18n-ru networkmanager bash-completion ntfs-3g os-prober xdg-user-dirs xdg-utils xclip wl-clipboard lrzip zip unrar unzip unace p7zip squashfs-tools hunspell gstreamer gst-plugins-bad gst-plugin-pipewire gst-plugins-base gst-plugins-good gst-libav ffmpegthumbnailer hunspell-en_us hunspell-ru xorg xorg-server xorg-xinit realtime-privileges dbus-broker irqbalance ananicy-cpp ananicy-rules-git memavaild uresourced plymouth prelockd yay cantarell-fonts"
+arch-chroot /mnt /bin/bash -c "pacman -Syy --needed --noconfirm noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-ms-fonts ttf-meslo-nerd-font-powerlevel10k bluez-utils bluez pipewire-jack grub efibootmgr firefox firefox-i18n-ru networkmanager bash-completion ntfs-3g os-prober xdg-user-dirs xdg-utils xclip wl-clipboard lrzip zip unrar unzip unace p7zip squashfs-tools hunspell gstreamer gst-plugins-bad gst-plugin-pipewire gst-plugins-base gst-plugins-good gst-libav ffmpegthumbnailer hunspell-en_us hunspell-ru xorg xorg-server xorg-xinit realtime-privileges dbus-broker irqbalance ananicy-cpp ananicy-rules-git memavaild uresourced plymouth prelockd yay cantarell-fonts"
 clear
 echo '
                                       Звуковой сервер
