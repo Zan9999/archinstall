@@ -69,7 +69,6 @@ if [ $result = "kvm" ]; then
   arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm mesa lib32-mesa mesa-utils inxi qemu-guest-agent"
 fi
 
-
 # Install ucode
 cpu_model_name=$(cat /proc/cpuinfo | grep vendor | cut -c 13-24 | uniq)
 

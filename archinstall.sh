@@ -193,7 +193,7 @@ arch-chroot /mnt /bin/bash -c "sed -i s/'#Color'/'Color\nILoveCandy'/g /etc/pacm
 arch-chroot /mnt /bin/bash -c "sed -i s/'CheckSpace'/'#CheckSpace'/g /etc/pacman.conf"
 arch-chroot /mnt /bin/bash -c "sed -i '/\[multilib\]/,/Include/''s/^#//' /etc/pacman.conf"
 #----------------------------Chaotic AUR----------------------------------------------------------------------
-if grep "chaotic-aur" /mnt/etc/pacman.conf; then
+if grep -q "chaotic-aur" /mnt/etc/pacman.conf; then
   echo "Chaotic-AUR уже добавлен!"
 else
   arch-chroot /mnt /bin/bash -c "pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com"
@@ -234,7 +234,7 @@ echo -n "
                           -> Введите значение : "
 read main_menu
       case "$main_menu" in
-         "1" ) arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm alsa-utils alsa-firmware alsa-card-profiles alsa-plugins pulseaudio pulseaudio-alsa pulseaudio-jack pulseaudio-bluetooth"
+         "1" ) arch-chroot /mnt /bin/bash -c "pacman -S --needed --noconfirm alsa-lib alsa-utils alsa-firmware alsa-card-profiles alsa-plugins pulseaudio pulseaudio-alsa pulseaudio-jack pulseaudio-bluetooth"
          ;;
          "2" ) ./scripts/pipewire.sh
       esac
@@ -422,7 +422,7 @@ clear
 arch-chroot /mnt /bin/bash -c "ln -sf /usr/share/zoneinfo/$region /etc/localtime"
 arch-chroot /mnt /bin/bash -c "hwclock --systohc"
 #----------------------------Locale----------------------------------------------------------------------
-if grep "LANG=ru_RU.UTF-8" /mnt/etc/locale.conf; then
+if grep -q "LANG=ru_RU.UTF-8" /mnt/etc/locale.conf; then
   echo "Локаль уже настроенна!"
 else
   arch-chroot /mnt /bin/bash -c "sed -i s/'#en_US.UTF-8'/'en_US.UTF-8'/g /etc/locale.gen"
@@ -433,7 +433,7 @@ else
   arch-chroot /mnt /bin/bash -c "echo 'FONT=cyr-sun16' >> /etc/vconsole.conf"
 fi
 #----------------------------Network----------------------------------------------------------------------
-if grep "$hostname" /mnt/etc/hostname; then
+if grep -q "$hostname" /mnt/etc/hostname; then
   echo "Сеть уже настроенна!"
 else
   arch-chroot /mnt /bin/bash -c "echo $hostname >> /etc/hostname"
@@ -450,7 +450,7 @@ arch-chroot /mnt /bin/bash -c "systemctl --global enable dbus-broker.service"
 arch-chroot /mnt /bin/bash -c "systemctl mask plymouth-quit-wait.service"
 #----------------------------GRUB----------------------------------------------------------------------
 arch-chroot /mnt /bin/bash -c "grub-install /dev/$disk"
-arch-chroot /mnt /bin/bash -c "sed -i s/'GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=3 quiet\"'/'GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=3 quiet splash raid=noautodetect mitigations=off preempt=none nowatchdog audit=0 selinux=0 split_lock_detect=off pci=pcie_bus_perf zswap.enabled=0 ibt=off libahci.ignore_sss=1\"'/g /etc/default/grub"
+arch-chroot /mnt /bin/bash -c "sed -i s/'GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=3 quiet\"'/'GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=3 quiet splash raid=noautodetect mitigations=off preempt=none nowatchdog audit=0 selinux=0 split_lock_detect=off pci=pcie_bus_perf zswap.enabled=0 ibt=off libahci.ignore_sss=1 noibrs noibpb nopti nospectre_v2 nospectre_v1 l1tf=off nospec_store_bypass_disable no_stf_barrier mds=off tsx=on tsx_async_abort=off spectre_v2=off nmi_watchdog=0\"'/g /etc/default/grub"
 arch-chroot /mnt /bin/bash -c "sed -i s/'#GRUB_DISABLE_OS_PROBER=false'/'GRUB_DISABLE_OS_PROBER=false'/g /etc/default/grub"
 arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
 #----------------------------initcpio----------------------------------------------------------------------
