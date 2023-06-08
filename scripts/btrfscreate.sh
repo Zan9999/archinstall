@@ -134,7 +134,7 @@ echo -e "\t
 
 
 
-                       -> Форматировать в EXT4      2"
+                       -> Форматировать в F2FS      2"
 echo -n "
 
 
@@ -202,7 +202,7 @@ clear
        esac
         ;;
         "2" )
-        mkfs.ext4 -F /dev/$root
+        mkfs.f2fs -F /dev/$root
 
         mount  /dev/$root /mnt
         clear
